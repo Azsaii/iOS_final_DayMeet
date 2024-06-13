@@ -16,7 +16,7 @@ class MainViewController: UIViewController {
     weak var delegate: CalendarDelegate?
     var selectedDate: Date = Date()
     
-    let customFont = UIFont.SpoqaHanSans(type: .Bold, size: 20)
+    let customFont = UIFont.SpoqaHanSans(type: .Light, size: 20)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +26,9 @@ class MainViewController: UIViewController {
         updateDateLabel(with: selectedDate)
         
         loginLogoutButton.titleLabel?.font = customFont
+        loginLogoutButton.layer.borderColor = UIColor.white.cgColor
+        loginLogoutButton.layer.borderWidth = 1.5
+        loginLogoutButton.layer.cornerRadius = 15.0
     }
     
     func addPostCreateViewController() {
@@ -104,12 +107,11 @@ class MainViewController: UIViewController {
         if let user = Auth.auth().currentUser {
             // 로그인 상태
             print("User is logged in as: \(user.email ?? "No Email")")
-            loginLogoutButton.setTitle("로그아웃", for: .normal)
-            print("t1")
+            loginLogoutButton.setTitle("Logout", for: .normal)
         } else {
             // 로그아웃 상태
             print("User is logged out")
-            loginLogoutButton.setTitle("로그인", for: .normal)
+            loginLogoutButton.setTitle("Login", for: .normal)
         }
         loginLogoutButton.titleLabel?.font = customFont
     }

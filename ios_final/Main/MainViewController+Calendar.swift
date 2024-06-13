@@ -31,7 +31,7 @@ extension MainViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalend
         // 월~일 글자 폰트 및 사이즈 지정
         self.calendar.appearance.weekdayFont = UIFont.SpoqaHanSans(type: .Regular, size: 14)
         // 숫자들 글자 폰트 및 사이즈 지정
-        self.calendar.appearance.titleFont = UIFont.SpoqaHanSans(type: .Light, size: 14)
+        self.calendar.appearance.titleFont = UIFont.SpoqaHanSans(type: .Regular, size: 14)
         
         // 캘린더 스크롤 가능하게 지정
         self.calendar.scrollEnabled = true
@@ -60,7 +60,8 @@ extension MainViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalend
         // 달에 유효하지 않은 날짜의 색 지정
         self.calendar.appearance.titlePlaceholderColor = UIColor.white.withAlphaComponent(0.5)
         // 평일 날짜 색
-        self.calendar.appearance.titleDefaultColor = UIColor.red.withAlphaComponent(0.5)
+        //self.calendar.appearance.titleDefaultColor = UIColor.red.withAlphaComponent(0.5)
+        self.calendar.appearance.titleWeekendColor = UIColor.green
         // 달에 유효하지않은 날짜 지우기
         self.calendar.placeholderType = .none
         
@@ -92,7 +93,7 @@ extension MainViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalend
 
     // 선택된 날짜의 채워진 색상 지정
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
-        return UIColor(red: 3/255, green: 18/255, blue: 48/255, alpha: 0.9)
+        return UIColor(red: 255/255.0, green: 0/255.0, blue: 50/255.0, alpha: 1.0)
     }
 
     // 선택된 날짜 테두리 색상
@@ -106,9 +107,11 @@ extension MainViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalend
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         if dateFormatter.string(from: date) == dateFormatter.string(from: today) {
-            return UIColor.yellow
-        } else {
-            return UIColor.white.withAlphaComponent(0.8)
+            return UIColor(red: 255/255.0, green: 0/255.0, blue: 50/255.0, alpha: 1.0)
+
+        }
+        else {
+            return UIColor.white
         }
     }
 

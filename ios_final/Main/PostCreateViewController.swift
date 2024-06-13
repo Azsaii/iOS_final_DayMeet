@@ -2,7 +2,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
-class PostCreateViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+class PostCreateViewController: UIViewController, UITextViewDelegate {
     
     
     @IBOutlet weak var currentDateLabel: UILabel!
@@ -17,9 +17,7 @@ class PostCreateViewController: UIViewController, UITextFieldDelegate, UITextVie
     @IBOutlet weak var contentTextViewHeightConstraint: NSLayoutConstraint!
     
     var selectedDate: Date = Date()
-    let placeholderText = "내용"
-    let defaultBorderWidth = 1.5
-    let focusedBorderWidth = 2.5
+    let placeholderText = "Enter your schedule"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +27,7 @@ class PostCreateViewController: UIViewController, UITextFieldDelegate, UITextVie
         loadPost(for: selectedDate)
         
         // 텍스트필드 설정
-        titleTextField.placeholder = "제목"
+        titleTextField.placeholder = "Enter your title"
         titleTextField.backgroundColor = .clear
         titleTextField.textColor = .white
         titleTextField.layer.borderColor = UIColor.white.cgColor
@@ -44,35 +42,11 @@ class PostCreateViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         // 텍스트뷰 설정
         contentTextView.text = placeholderText
-        contentTextView.textColor = .lightGray
         contentTextView.layer.cornerRadius = 5
         contentTextView.clipsToBounds = true
         contentTextView.backgroundColor = .clear
         contentTextView.layer.borderColor = UIColor.white.cgColor
         contentTextView.layer.borderWidth = defaultBorderWidth
-        
-        // 초기 플레이스홀더 색상 설정
-        if contentTextView.text == placeholderText {
-            contentTextView.textColor = .lightGray
-        } else {
-            contentTextView.textColor = .white
-        }
-        
-        // submitButton 설정
-        submitButton.layer.borderColor = UIColor.white.cgColor
-        submitButton.layer.borderWidth = defaultBorderWidth
-        submitButton.layer.cornerRadius = 5
-        submitButton.clipsToBounds = true
-    }
-    
-    // 텍스트필드 포커싱
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        animateBorderWidth(for: textField, to: focusedBorderWidth)
-    }
-    
-    // 텍스트필드 포커싱 해제
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        animateBorderWidth(for: textField, to: defaultBorderWidth)
     }
     
     // 텍스트뷰 포커싱
@@ -93,16 +67,6 @@ class PostCreateViewController: UIViewController, UITextFieldDelegate, UITextVie
         animateBorderWidth(for: textView, to: defaultBorderWidth)
     }
     
-    // 애니메이션을 사용하여 테두리 두께 변경
-    func animateBorderWidth(for view: UIView, to width: CGFloat) {
-        let animation = CABasicAnimation(keyPath: "borderWidth")
-        animation.fromValue = view.layer.borderWidth
-        animation.toValue = width
-        animation.duration = 0.2
-        view.layer.add(animation, forKey: "borderWidth")
-        view.layer.borderWidth = width
-    }
-    
     func updateCurrentDateLabel() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -112,12 +76,12 @@ class PostCreateViewController: UIViewController, UITextFieldDelegate, UITextVie
     @IBAction func submitButtonTapped(_ sender: UIButton) {
         guard let title = titleTextField.text, !title.isEmpty,
               let content = contentTextView.text, !content.isEmpty else {
-            showAlert(message: "Please enter both title and content.")
+            showAlert(title: "Error", message: "Please enter both title and content.")
             return
         }
         
         guard let user = Auth.auth().currentUser else {
-            showAlert(message: "You must be logged in to submit a post.")
+            showAlert(title: "Error", message: "You must be logged in to submit a post.")
             return
         }
         
@@ -154,24 +118,18 @@ class PostCreateViewController: UIViewController, UITextFieldDelegate, UITextVie
         // 모든 게시글을 위한 경로에 저장
         db.collection("posts").document(postId).setData(post) { error in
             if let error = error {
-                self.showAlert(message: "Error saving post: \(error.localizedDescription)")
+                self.showAlert(title: "Error", message: "Error saving post: \(error.localizedDescription)")
             } else {
                 // 사용자의 게시글 경로에 글 ID 저장
                 db.collection("users").document(user.uid).collection("posts").document(postId).setData(["postId": postId]) { error in
                     if let error = error {
-                        self.showAlert(message: "Error saving post in user path: \(error.localizedDescription)")
+                        self.showAlert(title: "Error", message: "Error saving post in user path: \(error.localizedDescription)")
                     } else {
-                        self.showAlert(message: "Post successfully saved!")
+                        self.showAlert(title: "Success", message: "Post successfully saved!")
                     }
                 }
             }
         }
-    }
-    
-    func showAlert(message: String) {
-        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
     
     // Firebase에서 날짜에 따른 글 정보 로드
@@ -191,16 +149,18 @@ class PostCreateViewController: UIViewController, UITextFieldDelegate, UITextVie
             .whereField("day", isEqualTo: day)
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
-                    self.showAlert(message: "Error loading post: \(error.localizedDescription)")
+                    self.showAlert(title: "Error", message: "Error loading post: \(error.localizedDescription)")
                 } else {
                     if let document = querySnapshot?.documents.first {
                         let data = document.data()
                         self.titleTextField.text = data["title"] as? String
                         self.contentTextView.text = data["content"] as? String
+                        self.contentTextView.textColor = .white
                         self.privacyToggle.isOn = data["isPublic"] as? Bool ?? true
                     } else {
                         self.titleTextField.text = ""
-                        self.contentTextView.text = ""
+                        self.contentTextView.text = self.placeholderText
+                        self.contentTextView.textColor = .lightGray
                         self.privacyToggle.isOn = true
                     }
                 }

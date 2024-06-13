@@ -11,6 +11,8 @@
 		654B854D2C16CFB00087F328 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 654B854C2C16CFB00087F328 /* AlamofireDynamic */; };
 		654D697C2C188CE800824D49 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 654D697B2C188CE800824D49 /* FSCalendar */; };
 		654D697E2C188FBD00824D49 /* MainViewController+Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D697D2C188FBD00824D49 /* MainViewController+Calendar.swift */; };
+		655926172C1AE6AC007C5DFB /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655926162C1AE6AC007C5DFB /* CustomButton.swift */; };
+		655926192C1AEE2A007C5DFB /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655926182C1AEE2A007C5DFB /* CustomColor.swift */; };
 		655F7BD32C16A47E00FFF781 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F7BD22C16A47E00FFF781 /* AppDelegate.swift */; };
 		655F7BD52C16A47E00FFF781 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F7BD42C16A47E00FFF781 /* SceneDelegate.swift */; };
 		655F7BD72C16A47E00FFF781 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F7BD62C16A47E00FFF781 /* MainViewController.swift */; };
@@ -23,9 +25,12 @@
 		655F7BF92C16A9C800FFF781 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 655F7BF82C16A9C800FFF781 /* FirebaseAuth */; };
 		655F7BFB2C16AA6200FFF781 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F7BFA2C16AA6200FFF781 /* LoginViewController.swift */; };
 		655F7BFD2C16AA7200FFF781 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F7BFC2C16AA7200FFF781 /* SignUpViewController.swift */; };
+		6562446A2C1B13840036C8A8 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656244692C1B13840036C8A8 /* FriendsViewController.swift */; };
+		6562446D2C1B2CD50036C8A8 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6562446C2C1B2CD50036C8A8 /* CustomTableViewCell.swift */; };
 		65662D8A2C1A14040052D87F /* SpoqaHanSansNeo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65B39DF22C1963FD0016E46F /* SpoqaHanSansNeo-Bold.ttf */; };
 		65662D8B2C1A14060052D87F /* SpoqaHanSansNeo-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65B39DF02C1963FD0016E46F /* SpoqaHanSansNeo-Light.ttf */; };
 		65662D8C2C1A14090052D87F /* SpoqaHanSansNeo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65B39DF12C1963FD0016E46F /* SpoqaHanSansNeo-Regular.ttf */; };
+		6595A6722C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6595A6712C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift */; };
 		65D24D032C1724EF002B93EA /* PostCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D24D022C1724EF002B93EA /* PostCreateViewController.swift */; };
 		65D24D052C172C56002B93EA /* UserPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D24D042C172C56002B93EA /* UserPostsViewController.swift */; };
 		65D24D072C172CB0002B93EA /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D24D062C172CB0002B93EA /* Post.swift */; };
@@ -34,6 +39,8 @@
 
 /* Begin PBXFileReference section */
 		654D697D2C188FBD00824D49 /* MainViewController+Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+Calendar.swift"; sourceTree = "<group>"; };
+		655926162C1AE6AC007C5DFB /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		655926182C1AEE2A007C5DFB /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		655F7BCF2C16A47E00FFF781 /* ios_final.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ios_final.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		655F7BD22C16A47E00FFF781 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		655F7BD42C16A47E00FFF781 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +52,9 @@
 		655F7BF62C16A6D200FFF781 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		655F7BFA2C16AA6200FFF781 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		655F7BFC2C16AA7200FFF781 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		656244692C1B13840036C8A8 /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		6562446C2C1B2CD50036C8A8 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		6595A6712C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TextFieldExtensions.swift"; sourceTree = "<group>"; };
 		65B39DF02C1963FD0016E46F /* SpoqaHanSansNeo-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Light.ttf"; path = "../../../../Downloads/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Light.ttf"; sourceTree = "<group>"; };
 		65B39DF12C1963FD0016E46F /* SpoqaHanSansNeo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Regular.ttf"; path = "../../../../Downloads/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Regular.ttf"; sourceTree = "<group>"; };
 		65B39DF22C1963FD0016E46F /* SpoqaHanSansNeo-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Bold.ttf"; path = "../../../../Downloads/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Bold.ttf"; sourceTree = "<group>"; };
@@ -91,22 +101,19 @@
 		655F7BD12C16A47E00FFF781 /* ios_final */ = {
 			isa = PBXGroup;
 			children = (
+				6562446B2C1B2CC00036C8A8 /* Social */,
+				6592DA362C1AB53300381D63 /* Main */,
+				6595A6702C1A80EA00D6CA51 /* Auth */,
 				65B39DEF2C19639C0016E46F /* Font */,
 				655F7BD22C16A47E00FFF781 /* AppDelegate.swift */,
 				655F7BD42C16A47E00FFF781 /* SceneDelegate.swift */,
-				655F7BD62C16A47E00FFF781 /* MainViewController.swift */,
 				655F7BD82C16A47E00FFF781 /* Main.storyboard */,
 				655F7BDB2C16A47F00FFF781 /* Assets.xcassets */,
 				655F7BDD2C16A47F00FFF781 /* LaunchScreen.storyboard */,
 				655F7BE02C16A47F00FFF781 /* Info.plist */,
 				655F7BF62C16A6D200FFF781 /* GoogleService-Info.plist */,
-				655F7BFA2C16AA6200FFF781 /* LoginViewController.swift */,
-				655F7BFC2C16AA7200FFF781 /* SignUpViewController.swift */,
-				65D24D022C1724EF002B93EA /* PostCreateViewController.swift */,
 				65D24D042C172C56002B93EA /* UserPostsViewController.swift */,
-				65D24D062C172CB0002B93EA /* Post.swift */,
 				65D24D082C1731AC002B93EA /* PostDetailViewController.swift */,
-				654D697D2C188FBD00824D49 /* MainViewController+Calendar.swift */,
 			);
 			path = ios_final;
 			sourceTree = "<group>";
@@ -116,6 +123,38 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6562446B2C1B2CC00036C8A8 /* Social */ = {
+			isa = PBXGroup;
+			children = (
+				656244692C1B13840036C8A8 /* FriendsViewController.swift */,
+				6562446C2C1B2CD50036C8A8 /* CustomTableViewCell.swift */,
+			);
+			path = Social;
+			sourceTree = "<group>";
+		};
+		6592DA362C1AB53300381D63 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				655F7BD62C16A47E00FFF781 /* MainViewController.swift */,
+				654D697D2C188FBD00824D49 /* MainViewController+Calendar.swift */,
+				65D24D022C1724EF002B93EA /* PostCreateViewController.swift */,
+				65D24D062C172CB0002B93EA /* Post.swift */,
+				655926162C1AE6AC007C5DFB /* CustomButton.swift */,
+				655926182C1AEE2A007C5DFB /* CustomColor.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		6595A6702C1A80EA00D6CA51 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				655F7BFA2C16AA6200FFF781 /* LoginViewController.swift */,
+				655F7BFC2C16AA7200FFF781 /* SignUpViewController.swift */,
+				6595A6712C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		65B39DEF2C19639C0016E46F /* Font */ = {
@@ -217,12 +256,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D24D032C1724EF002B93EA /* PostCreateViewController.swift in Sources */,
+				6595A6722C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift in Sources */,
 				654D697E2C188FBD00824D49 /* MainViewController+Calendar.swift in Sources */,
+				655926192C1AEE2A007C5DFB /* CustomColor.swift in Sources */,
+				6562446A2C1B13840036C8A8 /* FriendsViewController.swift in Sources */,
 				655F7BFB2C16AA6200FFF781 /* LoginViewController.swift in Sources */,
+				6562446D2C1B2CD50036C8A8 /* CustomTableViewCell.swift in Sources */,
 				65D24D052C172C56002B93EA /* UserPostsViewController.swift in Sources */,
 				65D24D072C172CB0002B93EA /* Post.swift in Sources */,
 				65D24D092C1731AC002B93EA /* PostDetailViewController.swift in Sources */,
 				655F7BD72C16A47E00FFF781 /* MainViewController.swift in Sources */,
+				655926172C1AE6AC007C5DFB /* CustomButton.swift in Sources */,
 				655F7BD32C16A47E00FFF781 /* AppDelegate.swift in Sources */,
 				655F7BD52C16A47E00FFF781 /* SceneDelegate.swift in Sources */,
 				655F7BFD2C16AA7200FFF781 /* SignUpViewController.swift in Sources */,
