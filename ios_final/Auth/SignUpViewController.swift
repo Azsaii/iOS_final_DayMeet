@@ -24,6 +24,19 @@ class SignUpViewController: UIViewController {
         passwordTextField.delegate = self
         confirmPasswordTextField.delegate = self
         nicknameTextField.delegate = self
+        
+        // 텍스트 필드 속성 설정
+        configureTextField(emailTextField)
+        configureTextField(passwordTextField)
+        configureTextField(confirmPasswordTextField)
+        configureTextField(nicknameTextField)
+    }
+    
+    private func configureTextField(_ textField: UITextField) {
+        textField.autocorrectionType = .no // 자동 수정 비활성화
+        textField.spellCheckingType = .no // 맞춤법 검사 비활성화
+        textField.smartInsertDeleteType = .no // 스마트 삽입/삭제 비활성화
+        textField.autocapitalizationType = .none // 자동 대문자 비활성화
     }
     
     
@@ -58,7 +71,7 @@ class SignUpViewController: UIViewController {
                     self.showAlert(title: "Error", message: "Failed to save nickname: \(error.localizedDescription)")
                 } else {
                     self.showAlert(title: "Success", message: "Successfully signed up!") {
-                        self.switchToMainScreen()
+                        self.dismiss(animated: true, completion: nil)
                     }
                 }
             }

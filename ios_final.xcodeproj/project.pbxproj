@@ -27,6 +27,7 @@
 		655F7BFD2C16AA7200FFF781 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F7BFC2C16AA7200FFF781 /* SignUpViewController.swift */; };
 		6562446A2C1B13840036C8A8 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656244692C1B13840036C8A8 /* FriendsViewController.swift */; };
 		6562446D2C1B2CD50036C8A8 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6562446C2C1B2CD50036C8A8 /* CustomTableViewCell.swift */; };
+		6562446F2C1B3D7E0036C8A8 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6562446E2C1B3D7E0036C8A8 /* CustomTabBarController.swift */; };
 		65662D8A2C1A14040052D87F /* SpoqaHanSansNeo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65B39DF22C1963FD0016E46F /* SpoqaHanSansNeo-Bold.ttf */; };
 		65662D8B2C1A14060052D87F /* SpoqaHanSansNeo-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65B39DF02C1963FD0016E46F /* SpoqaHanSansNeo-Light.ttf */; };
 		65662D8C2C1A14090052D87F /* SpoqaHanSansNeo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65B39DF12C1963FD0016E46F /* SpoqaHanSansNeo-Regular.ttf */; };
@@ -54,6 +55,7 @@
 		655F7BFC2C16AA7200FFF781 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		656244692C1B13840036C8A8 /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		6562446C2C1B2CD50036C8A8 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		6562446E2C1B3D7E0036C8A8 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		6595A6712C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TextFieldExtensions.swift"; sourceTree = "<group>"; };
 		65B39DF02C1963FD0016E46F /* SpoqaHanSansNeo-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Light.ttf"; path = "../../../../Downloads/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Light.ttf"; sourceTree = "<group>"; };
 		65B39DF12C1963FD0016E46F /* SpoqaHanSansNeo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SpoqaHanSansNeo-Regular.ttf"; path = "../../../../Downloads/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Regular.ttf"; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				65D24D062C172CB0002B93EA /* Post.swift */,
 				655926162C1AE6AC007C5DFB /* CustomButton.swift */,
 				655926182C1AEE2A007C5DFB /* CustomColor.swift */,
+				6562446E2C1B3D7E0036C8A8 /* CustomTabBarController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 			files = (
 				65D24D032C1724EF002B93EA /* PostCreateViewController.swift in Sources */,
 				6595A6722C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift in Sources */,
+				6562446F2C1B3D7E0036C8A8 /* CustomTabBarController.swift in Sources */,
 				654D697E2C188FBD00824D49 /* MainViewController+Calendar.swift in Sources */,
 				655926192C1AEE2A007C5DFB /* CustomColor.swift in Sources */,
 				6562446A2C1B13840036C8A8 /* FriendsViewController.swift in Sources */,
