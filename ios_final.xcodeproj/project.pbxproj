@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6524B1692C1C6BFF0076B547 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6524B1682C1C6BFF0076B547 /* CommentsViewController.swift */; };
 		654B854B2C16CFB00087F328 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 654B854A2C16CFB00087F328 /* Alamofire */; };
 		654B854D2C16CFB00087F328 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 654B854C2C16CFB00087F328 /* AlamofireDynamic */; };
 		654D697C2C188CE800824D49 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 654D697B2C188CE800824D49 /* FSCalendar */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6524B1682C1C6BFF0076B547 /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		654D697D2C188FBD00824D49 /* MainViewController+Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+Calendar.swift"; sourceTree = "<group>"; };
 		655926162C1AE6AC007C5DFB /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		655926182C1AEE2A007C5DFB /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
@@ -83,6 +85,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6524B1672C1C6BBB0076B547 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				65D24D022C1724EF002B93EA /* PostCreateViewController.swift */,
+				65D24D062C172CB0002B93EA /* Post.swift */,
+				65D24D042C172C56002B93EA /* UserPostsViewController.swift */,
+				65D24D082C1731AC002B93EA /* PostDetailViewController.swift */,
+				6524B1682C1C6BFF0076B547 /* CommentsViewController.swift */,
+			);
+			path = Schedule;
+			sourceTree = "<group>";
+		};
 		655F7BC62C16A47E00FFF781 = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +117,7 @@
 		655F7BD12C16A47E00FFF781 /* ios_final */ = {
 			isa = PBXGroup;
 			children = (
+				6524B1672C1C6BBB0076B547 /* Schedule */,
 				6562446B2C1B2CC00036C8A8 /* Social */,
 				6592DA362C1AB53300381D63 /* Main */,
 				6595A6702C1A80EA00D6CA51 /* Auth */,
@@ -114,8 +129,6 @@
 				655F7BDD2C16A47F00FFF781 /* LaunchScreen.storyboard */,
 				655F7BE02C16A47F00FFF781 /* Info.plist */,
 				655F7BF62C16A6D200FFF781 /* GoogleService-Info.plist */,
-				65D24D042C172C56002B93EA /* UserPostsViewController.swift */,
-				65D24D082C1731AC002B93EA /* PostDetailViewController.swift */,
 			);
 			path = ios_final;
 			sourceTree = "<group>";
@@ -141,8 +154,6 @@
 			children = (
 				655F7BD62C16A47E00FFF781 /* MainViewController.swift */,
 				654D697D2C188FBD00824D49 /* MainViewController+Calendar.swift */,
-				65D24D022C1724EF002B93EA /* PostCreateViewController.swift */,
-				65D24D062C172CB0002B93EA /* Post.swift */,
 				655926162C1AE6AC007C5DFB /* CustomButton.swift */,
 				655926182C1AEE2A007C5DFB /* CustomColor.swift */,
 				6562446E2C1B3D7E0036C8A8 /* CustomTabBarController.swift */,
@@ -261,6 +272,7 @@
 				65D24D032C1724EF002B93EA /* PostCreateViewController.swift in Sources */,
 				6595A6722C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift in Sources */,
 				6562446F2C1B3D7E0036C8A8 /* CustomTabBarController.swift in Sources */,
+				6524B1692C1C6BFF0076B547 /* CommentsViewController.swift in Sources */,
 				654D697E2C188FBD00824D49 /* MainViewController+Calendar.swift in Sources */,
 				655926192C1AEE2A007C5DFB /* CustomColor.swift in Sources */,
 				6562446A2C1B13840036C8A8 /* FriendsViewController.swift in Sources */,

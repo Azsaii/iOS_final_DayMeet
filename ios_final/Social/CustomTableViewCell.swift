@@ -31,4 +31,40 @@ class CustomTableViewCell: UITableViewCell {
     func showBottomBorder() {
         bottomBorder.isHidden = false
     }
+    
+    // 아이템이 선택되어도 배경색이 안변하게 한다.
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setupAppearance()
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // 선택 상태와 관계없이 배경색 설정
+        setupAppearance()
+    }
+
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        // 강조 상태와 관계없이 배경색 설정
+        setupAppearance()
+    }
+
+    private func setupAppearance() {
+        // 초기 배경색 설정
+        self.contentView.backgroundColor = .customBlue
+        self.backgroundColor = .customBlue
+        updateAccessoryViewBackgroundColor()
+        self.selectionStyle = .none // 선택 스타일을 none으로 설정
+    }
+
+    private func updateAccessoryViewBackgroundColor() {
+        // 액세서리 뷰의 배경색 설정
+        if let accessoryView = self.accessoryView {
+            accessoryView.backgroundColor = .customBlue
+            accessoryView.subviews.forEach { subview in
+                subview.backgroundColor = .customBlue
+            }
+        }
+    }
 }

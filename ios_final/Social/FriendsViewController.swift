@@ -11,32 +11,35 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
     var allFriends: [User] = [] // 팔로우한 친구들의 유저 정보
     var filteredFriends: [User] = [] // 필터링된 친구들의 유저 정보
     var isSearching = false // 검색 중인지 여부를 나타내는 플래그
+    var selectedUserId: String? // 선택된 유저 ID를 저장할 변수
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         searchTextField.delegate = self
         searchTextField.keyboardType = .asciiCapable
-        searchTextField.setRightClearButton(target: self, action: #selector(clearText))
-
+        searchTextField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
         tableView.dataSource = self
         tableView.delegate = self
-
+        
         // 텍스트 필드에 돋보기 아이콘 추가
         if let searchIcon = UIImage(systemName: "magnifyingglass") {
             searchTextField.setLeftIcon(searchIcon)
         }
+        searchTextField.setRightClearButton(target: self, action: #selector(clearText)) // 서치바에 x 버튼추가
+        
         configureTextField(searchTextField) // 검사 해제
         setupTextField(searchTextField) // 스타일 설정
-
+        
         fetchFriends()
     }
-
+    
     @objc private func clearText() {
         searchTextField.text = ""
         textFieldEditingChanged(searchTextField)
     }
-
+    
     
     private func configureTextField(_ textField: UITextField) {
         textField.autocorrectionType = .no // 자동 수정 비활성화
@@ -46,7 +49,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50 // 원하는 셀 높이 설정 (예: 80)
+        return 50 // 테이블 셀 높이
     }
     
     // Firestore에서 친구 목록을 가져옵니다.
@@ -64,6 +67,30 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
                     return User(uid: $0.documentID, nickname: data["nickname"] as? String ?? "")
                 } ?? []
                 self.tableView.reloadData()
+                self.updateTableViewBackground()
+            }
+        }
+    }
+    
+    // 테이블뷰 배경 업데이트
+    func updateTableViewBackground() {
+
+        if allFriends.isEmpty && !isSearching {
+            let noFriendsLabel = UILabel()
+            noFriendsLabel.text = "아직 팔로우한 친구가 없습니다"
+            noFriendsLabel.textColor = .white
+            noFriendsLabel.textAlignment = .center
+            noFriendsLabel.frame = tableView.bounds
+            noFriendsLabel.sizeToFit()
+            explainLabel.text = "" // 팔로우한 친구 없는 경우 "팔로우 목록" 문장이 안나타나게 한다.
+            
+            tableView.backgroundView = noFriendsLabel
+            tableView.separatorStyle = .none
+        } else {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+            if !isSearching {
+                explainLabel.text = "팔로우 목록"
             }
         }
     }
@@ -73,7 +100,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
         if isSearching {
             return filteredFriends.count
         } else {
-            return allFriends.isEmpty ? 1 : allFriends.count
+            return allFriends.count
         }
     }
     
@@ -83,17 +110,87 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
         if isSearching {
             configureCell(cell, with: filteredFriends[indexPath.row])
         } else {
-            if allFriends.isEmpty {
-                cell.textLabel?.text = "No followed friends found."
-                cell.textLabel?.textColor = .white
-                cell.backgroundColor = .customBlue
-                cell.accessoryView = nil
-            } else {
-                configureCell(cell, with: allFriends[indexPath.row])
-            }
+            configureCell(cell, with: allFriends[indexPath.row])
         }
         
         return cell
+    }
+    
+    @objc func textFieldEditingChanged(_ textField: UITextField) {
+        let currentText = textField.text ?? ""
+        if currentText.isEmpty {
+            isSearching = false
+            filteredFriends.removeAll()
+            fetchFriends() // 검색어가 비워졌을 때 팔로우한 사람 목록을 다시 가져옴
+            
+            if allFriends.isEmpty {
+                explainLabel.text = ""
+            } else {
+                explainLabel.text = "팔로우 목록" // 레이블 텍스트 설정
+            }
+        } else {
+            isSearching = true
+            explainLabel.text = "검색 결과" // 레이블 텍스트 설정
+            searchUsers(with: currentText.lowercased())
+        }
+        updateTableViewBackground()
+        tableView.reloadData()
+    }
+    
+    
+    override func textFieldDidEndEditing(_ textField: UITextField) {
+        animateBorderWidth(for: textField, to: defaultBorderWidth)
+        if textField.text?.isEmpty ?? true {
+            isSearching = false
+            filteredFriends.removeAll()
+            explainLabel.text = "팔로우 목록" // 레이블 텍스트 설정
+            fetchFriends() // 검색어가 비워졌을 때 팔로우한 사람 목록을 다시 가져옴
+            tableView.reloadData()
+        }
+    }
+    
+    // 검색 텍스트바 사용 여부에 따라 레이블 변경
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? string
+        if currentText.isEmpty {
+            isSearching = false
+            filteredFriends.removeAll()
+            explainLabel.text = "팔로우 목록" // 레이블 텍스트 설정
+            fetchFriends() // 검색어가 비워졌을 때 팔로우한 사람 목록을 다시 가져옴
+        } else {
+            isSearching = true
+            explainLabel.text = "검색 결과" // 레이블 텍스트 설정
+            searchUsers(with: currentText.lowercased())
+        }
+        tableView.reloadData()
+        return true
+    }
+    
+    func searchUsers(with query: String) {
+        let db = Firestore.firestore()
+        let usersRef = db.collection("users")
+        let currentUserId = Auth.auth().currentUser?.uid
+        
+        // Firestore에서 닉네임을 소문자로 검색
+        usersRef.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error)")
+            } else {
+                self.filteredFriends = snapshot?.documents.compactMap {
+                    let data = $0.data()
+                    if let nickname = data["nickname"] as? String {
+                        let matchesQuery = nickname.lowercased().contains(query.lowercased())
+                        // 자신의 id 는 검색 대상에서 제외한다.
+                        let isNotCurrentUser = currentUserId == nil || $0.documentID != currentUserId
+                        if matchesQuery && isNotCurrentUser {
+                            return User(uid: $0.documentID, nickname: nickname)
+                        }
+                    }
+                    return nil
+                } ?? []
+                self.tableView.reloadData()
+            }
+        }
     }
     
     func configureCell(_ cell: CustomTableViewCell, with user: User) {
@@ -168,6 +265,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
                             self.filteredFriends.remove(at: index)
                         }
                         self.tableView.reloadData()
+                        self.updateTableViewBackground()
                     }
                 }
             }))
@@ -186,72 +284,20 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
-    @objc func textFieldEditingChanged(_ textField: UITextField) {
-        let currentText = textField.text ?? ""
-        if currentText.isEmpty {
-            isSearching = false
-            filteredFriends.removeAll()
-            explainLabel.text = "팔로우 목록" // 레이블 텍스트 설정
-            fetchFriends() // 검색어가 비워졌을 때 팔로우한 사람 목록을 다시 가져옴
-        } else {
-            isSearching = true
-            explainLabel.text = "검색 결과" // 레이블 텍스트 설정
-            searchUsers(with: currentText.lowercased())
-        }
-        tableView.reloadData()
+    // 셀 클릭 시 네비게이트
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedUser = isSearching ? filteredFriends[indexPath.row] : allFriends[indexPath.row]
+        selectedUserId = selectedUser.uid
+        performSegue(withIdentifier: "showUserPosts", sender: self)
     }
     
-    override func textFieldDidEndEditing(_ textField: UITextField) {
-        animateBorderWidth(for: textField, to: defaultBorderWidth)
-        if textField.text?.isEmpty ?? true {
-            isSearching = false
-            filteredFriends.removeAll()
-            explainLabel.text = "팔로우 목록" // 레이블 텍스트 설정
-            fetchFriends() // 검색어가 비워졌을 때 팔로우한 사람 목록을 다시 가져옴
-            tableView.reloadData()
-        }
-    }
-    
-    // 검색 텍스트바 사용 여부에 따라 레이블 변경
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? string
-        if currentText.isEmpty {
-            isSearching = false
-            filteredFriends.removeAll()
-            explainLabel.text = "팔로우 목록" // 레이블 텍스트 설정
-            fetchFriends() // 검색어가 비워졌을 때 팔로우한 사람 목록을 다시 가져옴
-        } else {
-            isSearching = true
-            explainLabel.text = "검색 결과" // 레이블 텍스트 설정
-            searchUsers(with: currentText.lowercased())
-        }
-        tableView.reloadData()
-        return true
-    }
-    
-    func searchUsers(with query: String) {
-        let db = Firestore.firestore()
-        let usersRef = db.collection("users")
-        let currentUserId = Auth.auth().currentUser?.uid
-        
-        // Firestore에서 닉네임을 소문자로 검색
-        usersRef.getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Error getting documents: \(error)")
-            } else {
-                self.filteredFriends = snapshot?.documents.compactMap {
-                    let data = $0.data()
-                    if let nickname = data["nickname"] as? String {
-                        let matchesQuery = nickname.lowercased().contains(query.lowercased())
-                        // 자신의 id 는 검색 대상에서 제외한다.
-                        let isNotCurrentUser = currentUserId == nil || $0.documentID != currentUserId
-                        if matchesQuery && isNotCurrentUser {
-                            return User(uid: $0.documentID, nickname: nickname)
-                        }
-                    }
-                    return nil
-                } ?? []
-                self.tableView.reloadData()
+    // prepare(for:sender:) 메서드 추가
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showUserPosts" {
+            if let userPostsVC = segue.destination as? UserPostsViewController {
+                if let userId = selectedUserId {
+                    userPostsVC.setUserId(userId)
+                }
             }
         }
     }
@@ -295,7 +341,7 @@ extension UITextField {
         clearButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         clearButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10) // 오른쪽 여백을 추가하여 왼쪽으로 이동
         clearButton.addTarget(target, action: action, for: .touchUpInside)
-
+        
         self.rightView = clearButton
         self.rightViewMode = .always
     }

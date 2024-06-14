@@ -15,19 +15,20 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var contentTextViewHeightConstraint: NSLayoutConstraint!
+    weak var commentsViewController: CommentsViewController?
     
+    // 달력 선택 날짜가 바뀌면 데이터 가져오기
     var selectedDate: Date = Date()
-    let placeholderText = "Enter your schedule"
+    let placeholderText = "일정 입력하기"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         titleTextField.delegate = self
         contentTextView.delegate = self
         updateCurrentDateLabel()
-        loadPost(for: selectedDate)
         
         // 텍스트필드 설정
-        titleTextField.placeholder = "Enter your title"
+        titleTextField.placeholder = "제목"
         titleTextField.backgroundColor = .clear
         titleTextField.textColor = .white
         titleTextField.layer.borderColor = UIColor.white.cgColor
@@ -132,9 +133,23 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    // 토글 값 변경 시 호출되는 메서드
+    @IBAction func privacyToggleChanged(_ sender: UISwitch) {
+        updatePrivacyLabel(isPublic: sender.isOn)
+    }
+    
+    // Privacy Label 업데이트 메서드
+    private func updatePrivacyLabel(isPublic: Bool) {
+        privacyLabel.text = isPublic ? "공개" : "비공개"
+    }
+    
     // Firebase에서 날짜에 따른 글 정보 로드
-    func loadPost(for date: Date) {
-        guard let user = Auth.auth().currentUser else { return }
+    func loadPost(for date: Date, completion: @escaping (String?) -> Void) {
+        print("loadPost!!")
+        guard let user = Auth.auth().currentUser else {
+            completion(nil)
+            return
+        }
         
         let calendar = Calendar.current
         let year = calendar.component(.year, from: date)
@@ -149,19 +164,32 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
             .whereField("day", isEqualTo: day)
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
-                    self.showAlert(title: "Error", message: "Error loading post: \(error.localizedDescription)")
+                    DispatchQueue.main.async {
+                        self.showAlert(title: "Error", message: "Error loading post: \(error.localizedDescription)")
+                    }
+                    completion(nil)
                 } else {
-                    if let document = querySnapshot?.documents.first {
-                        let data = document.data()
-                        self.titleTextField.text = data["title"] as? String
-                        self.contentTextView.text = data["content"] as? String
-                        self.contentTextView.textColor = .white
-                        self.privacyToggle.isOn = data["isPublic"] as? Bool ?? true
-                    } else {
-                        self.titleTextField.text = ""
-                        self.contentTextView.text = self.placeholderText
-                        self.contentTextView.textColor = .lightGray
-                        self.privacyToggle.isOn = true
+                    DispatchQueue.main.async {
+                        if let document = querySnapshot?.documents.first {
+                            let data = document.data()
+                            self.titleTextField.text = data["title"] as? String
+                            self.contentTextView.text = data["content"] as? String
+                            self.contentTextView.textColor = .white
+                            let isPublic = data["isPublic"] as? Bool ?? true
+                            self.privacyToggle.isOn = isPublic
+                            self.updatePrivacyLabel(isPublic: isPublic)
+                            completion(document.documentID)
+                            
+                            // 댓글 컨트롤러에 업데이트된 postId 전달
+                            self.commentsViewController?.postId = document.documentID
+                        } else {
+                            self.titleTextField.text = ""
+                            self.contentTextView.text = self.placeholderText
+                            self.contentTextView.textColor = .lightGray
+                            self.privacyToggle.isOn = true
+                            self.updatePrivacyLabel(isPublic: true)
+                            completion(nil)
+                        }
                     }
                 }
             }
