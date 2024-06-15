@@ -29,8 +29,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         searchTextField.setRightClearButton(target: self, action: #selector(clearText)) // 서치바에 x 버튼추가
         
-        configureTextField(searchTextField) // 검사 해제
-        setupTextField(searchTextField) // 스타일 설정
+        configureTextField(searchTextField) // 초기 설정
         
         fetchFriends()
     }
@@ -38,14 +37,6 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
     @objc private func clearText() {
         searchTextField.text = ""
         textFieldEditingChanged(searchTextField)
-    }
-    
-    
-    private func configureTextField(_ textField: UITextField) {
-        textField.autocorrectionType = .no // 자동 수정 비활성화
-        textField.spellCheckingType = .no // 맞춤법 검사 비활성화
-        textField.smartInsertDeleteType = .no // 스마트 삽입/삭제 비활성화
-        textField.autocapitalizationType = .none // 자동 대문자 비활성화
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -195,8 +186,6 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func configureCell(_ cell: CustomTableViewCell, with user: User) {
         cell.textLabel?.text = user.nickname
-        cell.textLabel?.textColor = .white // 글자색
-        cell.backgroundColor = .customBlue // 셀 배경색 설정
         
         // 로그아웃 상태면 팔로우 버튼 추가 안하고 종료한다.
         guard let userId = Auth.auth().currentUser?.uid else {
@@ -301,12 +290,6 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
             }
         }
     }
-}
-
-// 유저 모델
-struct User {
-    var uid: String
-    var nickname: String
 }
 
 extension UIImage {

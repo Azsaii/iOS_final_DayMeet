@@ -3,6 +3,7 @@ import UIKit
 extension UIColor {
     static let customBlue = UIColor(hex: "334C7D")
     static let darkBlue = UIColor(hex: "031230")
+    static let darkGreen = UIColor(hex: "243003")
 }
 
 extension UIColor {

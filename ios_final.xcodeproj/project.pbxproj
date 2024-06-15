@@ -37,6 +37,7 @@
 		65D24D052C172C56002B93EA /* UserPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D24D042C172C56002B93EA /* UserPostsViewController.swift */; };
 		65D24D072C172CB0002B93EA /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D24D062C172CB0002B93EA /* Post.swift */; };
 		65D24D092C1731AC002B93EA /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D24D082C1731AC002B93EA /* PostDetailViewController.swift */; };
+		65DCEB352C1D6A9400A76FB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DCEB342C1D6A9400A76FB7 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		65D24D042C172C56002B93EA /* UserPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewController.swift; sourceTree = "<group>"; };
 		65D24D062C172CB0002B93EA /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		65D24D082C1731AC002B93EA /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
+		65DCEB342C1D6A9400A76FB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +91,6 @@
 			isa = PBXGroup;
 			children = (
 				65D24D022C1724EF002B93EA /* PostCreateViewController.swift */,
-				65D24D062C172CB0002B93EA /* Post.swift */,
 				65D24D042C172C56002B93EA /* UserPostsViewController.swift */,
 				65D24D082C1731AC002B93EA /* PostDetailViewController.swift */,
 				6524B1682C1C6BFF0076B547 /* CommentsViewController.swift */,
@@ -117,6 +118,8 @@
 		655F7BD12C16A47E00FFF781 /* ios_final */ = {
 			isa = PBXGroup;
 			children = (
+				65DCEB362C1D6AA100A76FB7 /* Model */,
+				65DCEB312C1D69C800A76FB7 /* Util */,
 				6524B1672C1C6BBB0076B547 /* Schedule */,
 				6562446B2C1B2CC00036C8A8 /* Social */,
 				6592DA362C1AB53300381D63 /* Main */,
@@ -144,7 +147,6 @@
 			isa = PBXGroup;
 			children = (
 				656244692C1B13840036C8A8 /* FriendsViewController.swift */,
-				6562446C2C1B2CD50036C8A8 /* CustomTableViewCell.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -154,9 +156,6 @@
 			children = (
 				655F7BD62C16A47E00FFF781 /* MainViewController.swift */,
 				654D697D2C188FBD00824D49 /* MainViewController+Calendar.swift */,
-				655926162C1AE6AC007C5DFB /* CustomButton.swift */,
-				655926182C1AEE2A007C5DFB /* CustomColor.swift */,
-				6562446E2C1B3D7E0036C8A8 /* CustomTabBarController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -166,7 +165,6 @@
 			children = (
 				655F7BFA2C16AA6200FFF781 /* LoginViewController.swift */,
 				655F7BFC2C16AA7200FFF781 /* SignUpViewController.swift */,
-				6595A6712C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -179,6 +177,27 @@
 				65B39DF12C1963FD0016E46F /* SpoqaHanSansNeo-Regular.ttf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		65DCEB312C1D69C800A76FB7 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				6562446C2C1B2CD50036C8A8 /* CustomTableViewCell.swift */,
+				655926162C1AE6AC007C5DFB /* CustomButton.swift */,
+				655926182C1AEE2A007C5DFB /* CustomColor.swift */,
+				6562446E2C1B3D7E0036C8A8 /* CustomTabBarController.swift */,
+				6595A6712C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		65DCEB362C1D6AA100A76FB7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				65D24D062C172CB0002B93EA /* Post.swift */,
+				65DCEB342C1D6A9400A76FB7 /* User.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,6 +305,7 @@
 				655F7BD32C16A47E00FFF781 /* AppDelegate.swift in Sources */,
 				655F7BD52C16A47E00FFF781 /* SceneDelegate.swift in Sources */,
 				655F7BFD2C16AA7200FFF781 /* SignUpViewController.swift in Sources */,
+				65DCEB352C1D6A9400A76FB7 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

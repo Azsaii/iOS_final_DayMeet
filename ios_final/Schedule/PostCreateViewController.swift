@@ -4,7 +4,6 @@ import FirebaseFirestore
 
 class PostCreateViewController: UIViewController, UITextViewDelegate {
     
-    
     @IBOutlet weak var currentDateLabel: UILabel!
     @IBOutlet weak var privacyLabel: UILabel!
     @IBOutlet weak var privacyToggle: UISwitch!
@@ -50,7 +49,7 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
         contentTextView.layer.borderWidth = defaultBorderWidth
     }
     
-    // 텍스트뷰 포커싱
+    // 텍스트뷰 포커싱되면 플레이스홀더 삭제
     func textViewDidBeginEditing(_ textView: UITextView) {
         if contentTextView.text == placeholderText {
             contentTextView.text = ""
@@ -59,7 +58,7 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
         animateBorderWidth(for: textView, to: focusedBorderWidth)
     }
     
-    // 텍스트뷰 포커싱
+    // 텍스트뷰 포커싱 해제되면 플레이스홀더 적용
     func textViewDidEndEditing(_ textView: UITextView) {
         if contentTextView.text.isEmpty {
             contentTextView.text = placeholderText

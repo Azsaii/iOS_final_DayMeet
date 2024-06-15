@@ -7,14 +7,46 @@ extension UIViewController {
     var defaultBorderWidth: CGFloat { return 1.5 }
     var focusedBorderWidth: CGFloat { return 2.5 }
     
-    func setupTextField(_ textField: UITextField) {
+    func configureTextField(_ textField: UITextField) {
+        
+        // 스타일 적용
         textField.layer.borderWidth = defaultBorderWidth
         textField.layer.borderColor = UIColor.white.cgColor
         textField.backgroundColor = .clear
         textField.layer.cornerRadius = 5
         textField.clipsToBounds = true
         textField.delegate = self as UITextFieldDelegate
+        
+        // 검사 해제
+        disableChecks(for: textField)
     }
+    
+    func configureTextView(_ textView: UITextView) {
+        
+        // 스타일 적용
+        textView.layer.cornerRadius = 5
+        textView.clipsToBounds = true
+        textView.backgroundColor = .clear
+        textView.layer.borderColor = UIColor.white.cgColor
+        textView.layer.borderWidth = defaultBorderWidth
+        
+        // 검사 해제
+        disableChecks(for: textView)
+    }
+    
+    func disableChecks(for textField: UITextField) {
+        textField.autocorrectionType = .no
+        textField.spellCheckingType = .no
+        textField.smartInsertDeleteType = .no
+        textField.autocapitalizationType = .none
+    }
+
+    func disableChecks(for textView: UITextView) {
+        textView.autocorrectionType = .no
+        textView.spellCheckingType = .no
+        textView.autocapitalizationType = .none
+    }
+ 
     
     func animateBorderWidth(for view: UIView, to width: CGFloat) {
         let animation = CABasicAnimation(keyPath: "borderWidth")

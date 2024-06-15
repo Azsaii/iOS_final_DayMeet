@@ -12,33 +12,19 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // 텍스트 필드 초기 설정
-        setupTextField(emailTextField)
-        setupTextField(passwordTextField)
-        setupTextField(confirmPasswordTextField)
-        setupTextField(nicknameTextField)
-        
+
         // 텍스트 필드 delegate 설정
         emailTextField.delegate = self
         passwordTextField.delegate = self
         confirmPasswordTextField.delegate = self
         nicknameTextField.delegate = self
         
-        // 텍스트 필드 속성 설정
+        // 텍스트 필드 초기 설정
         configureTextField(emailTextField)
         configureTextField(passwordTextField)
         configureTextField(confirmPasswordTextField)
         configureTextField(nicknameTextField)
     }
-    
-    private func configureTextField(_ textField: UITextField) {
-        textField.autocorrectionType = .no // 자동 수정 비활성화
-        textField.spellCheckingType = .no // 맞춤법 검사 비활성화
-        textField.smartInsertDeleteType = .no // 스마트 삽입/삭제 비활성화
-        textField.autocapitalizationType = .none // 자동 대문자 비활성화
-    }
-    
     
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
         guard let email = emailTextField.text, !email.isEmpty,

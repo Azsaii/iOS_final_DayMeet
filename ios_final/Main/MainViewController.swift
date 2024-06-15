@@ -7,6 +7,7 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate {
     @IBOutlet weak var loginLogoutButton: UIButton!
     @IBOutlet weak var myPostsButton: UIButton!
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var bodyView: UIView!
     var postCreateViewController: PostCreateViewController?
     @IBOutlet weak var postView: UIView!
@@ -98,6 +99,7 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate {
                 self.commentsViewController?.postId = postId
             } else {
                 print("No postId found for the selected date.") // postId가 없을 때 로그 출력
+                self.commentsViewController?.initComment() // 댓글창 초기화
             }
         }
     }
@@ -157,9 +159,16 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate {
     }
     
     func updateCommentsContainerHeight(_ height: CGFloat) {
-        print("main height update")
         commentsContainerHeightConstraint.constant = height
         view.layoutIfNeeded()
+    }
+    
+    func scrollToBottom() {
+        // 스크롤뷰를 최하단으로 스크롤
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.height + scrollView.contentInset.bottom)
+        if bottomOffset.y > 0 {
+            scrollView.setContentOffset(bottomOffset, animated: true)
+        }
     }
 }
 

@@ -14,21 +14,9 @@ class LoginViewController: UIViewController {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
-        // 맞춤법 검사 및 자동 수정 비활성화
+        // 스타일, 검사 설정
         configureTextField(emailTextField)
         configureTextField(passwordTextField)
-        
-        // 텍스트 필드 초기 설정
-        setupTextField(emailTextField)
-        setupTextField(passwordTextField)
-        
-    }
-    
-    private func configureTextField(_ textField: UITextField) {
-        textField.autocorrectionType = .no // 자동 수정 비활성화
-        textField.spellCheckingType = .no // 맞춤법 검사 비활성화
-        textField.smartInsertDeleteType = .no // 스마트 삽입/삭제 비활성화
-        textField.autocapitalizationType = .none // 자동 대문자 비활성화
     }
     
     @IBAction func loginButtonTapped(_ sender: UIButton) {
