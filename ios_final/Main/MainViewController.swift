@@ -2,8 +2,8 @@ import UIKit
 import FirebaseAuth
 import FSCalendar
 
-class MainViewController: UIViewController, CommentsViewControllerDelegate {
-    
+class MainViewController: UIViewController, CommentsViewControllerDelegate, KeyboardEvent {
+
     @IBOutlet weak var loginLogoutButton: UIButton!
     @IBOutlet weak var myPostsButton: UIButton!
     
@@ -20,6 +20,10 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate {
     @IBOutlet weak var commentsContainerHeightConstraint: NSLayoutConstraint!
     var commentsViewController: CommentsViewController?
     
+    // 키보드 이벤트 시 움직일 뷰
+    var transformView: UIView { return self.view }
+    var isKeyboardVisible = false // 키보드가 나타났는지 여부를 기록
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAuthStateListener()
@@ -33,8 +37,21 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate {
         loginLogoutButton.layer.borderWidth = 1.5
         loginLogoutButton.layer.cornerRadius = 15.0
         
-        commentsViewController?.delegate = self 
         commentsContainerHeightConstraint.constant = 60 // 초기 높이 설정
+        
+        // 키보드가 올라왔을 때 드래그하면 내려간다.
+        scrollView.keyboardDismissMode = .onDrag
+        
+        // KeyboardEvent의 setupKeyboardEvent
+        setupKeyboardEvent()
+    }
+    
+    // KeyboardEvent에서 사용된 addObserver는 자동으로 제거가 안됨
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        // KeyboardEvent의 removeKeyboardObserver
+        removeKeyboardObserver()
     }
     
     func addPostCreateViewController() {
@@ -57,7 +74,7 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate {
             // postCreateViewController 참조 저장
             postCreateViewController = postVC
             postCreateViewController?.selectedDate = selectedDate // 선택 날짜 변경 전달
-
+            
             // commentsViewController 설정
             if let commentsVC = self.commentsViewController {
                 postCreateViewController?.commentsViewController = commentsVC
@@ -84,6 +101,7 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate {
             
             // commentsViewController 참조 저장
             self.commentsViewController = commentsVC
+            commentsViewController?.delegate = self
         }
     }
     

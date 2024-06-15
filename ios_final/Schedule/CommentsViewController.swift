@@ -8,7 +8,7 @@ protocol CommentsViewControllerDelegate: AnyObject {
 }
 
 class CommentsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
-    
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commentTextView: UITextView!
     @IBOutlet weak var postCommentButton: UIButton!
@@ -24,6 +24,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             isCommentSaved = false // 새로 글을 로드하면 스크롤이 최하단으로 안가게 함
         }
     }
+    //var postId: String?
     var comments: [[String: Any]] = [] // 댓글 데이터를 저장할 배열 (딕셔너리 형태)
     var isCommentSaved = false // 댓글이 1회라도 저장되어야 화면이 최하단으로 스크롤되게 하기 위함.
     let commentHeight: CGFloat = 50 // 댓글 하나당 고정 높이
@@ -44,16 +45,12 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         commentTextView.isScrollEnabled = false
         commentTextView.textContainer.lineBreakMode = .byWordWrapping
         
-        // 초기 텍스트뷰 높이 설정
-        commentTextView.translatesAutoresizingMaskIntoConstraints = false
-        let heightConstraint = commentTextView.heightAnchor.constraint(equalToConstant: 40)
-        heightConstraint.isActive = true
-        view.layoutIfNeeded()
-        
         // 텍스트뷰 초기 설정
         configureTextView(commentTextView)
         commentTextView.text = placeholderText
-
+        
+        // 드래그 시 키보드 내림
+        tableView.keyboardDismissMode = .onDrag
     }
     
     func textViewDidChange(_ textView: UITextView) {
@@ -76,7 +73,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         // 댓글 컨테이너 높이 업데이트
-        tableView.layoutIfNeeded()
+        //tableView.layoutIfNeeded()
         let tableViewContentHeight = tableView.contentSize.height
         let otherSubviewsHeight: CGFloat = 25 // 예: 댓글 입력 필드와 버튼의 높이 합산
         let newContainerHeight = tableViewContentHeight + otherSubviewsHeight + newHeight
@@ -114,7 +111,6 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func saveComment(_ comment: String) {
-        
         guard let user = Auth.auth().currentUser else {
             showAlert(title: "Error", message: "You must be logged in to post a comment.")
             return

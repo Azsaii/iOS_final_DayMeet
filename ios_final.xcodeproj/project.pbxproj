@@ -37,6 +37,7 @@
 		65D24D052C172C56002B93EA /* UserPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D24D042C172C56002B93EA /* UserPostsViewController.swift */; };
 		65D24D072C172CB0002B93EA /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D24D062C172CB0002B93EA /* Post.swift */; };
 		65D24D092C1731AC002B93EA /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D24D082C1731AC002B93EA /* PostDetailViewController.swift */; };
+		65D8B4132C1DC8520005B3BD /* KeyboardEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8B4122C1DC8520005B3BD /* KeyboardEvent.swift */; };
 		65DCEB352C1D6A9400A76FB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DCEB342C1D6A9400A76FB7 /* User.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,7 @@
 		65D24D042C172C56002B93EA /* UserPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsViewController.swift; sourceTree = "<group>"; };
 		65D24D062C172CB0002B93EA /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		65D24D082C1731AC002B93EA /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
+		65D8B4122C1DC8520005B3BD /* KeyboardEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardEvent.swift; sourceTree = "<group>"; };
 		65DCEB342C1D6A9400A76FB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -187,6 +189,7 @@
 				655926182C1AEE2A007C5DFB /* CustomColor.swift */,
 				6562446E2C1B3D7E0036C8A8 /* CustomTabBarController.swift */,
 				6595A6712C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift */,
+				65D8B4122C1DC8520005B3BD /* KeyboardEvent.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				6562446A2C1B13840036C8A8 /* FriendsViewController.swift in Sources */,
 				655F7BFB2C16AA6200FFF781 /* LoginViewController.swift in Sources */,
 				6562446D2C1B2CD50036C8A8 /* CustomTableViewCell.swift in Sources */,
+				65D8B4132C1DC8520005B3BD /* KeyboardEvent.swift in Sources */,
 				65D24D052C172C56002B93EA /* UserPostsViewController.swift in Sources */,
 				65D24D072C172CB0002B93EA /* Post.swift in Sources */,
 				65D24D092C1731AC002B93EA /* PostDetailViewController.swift in Sources */,
@@ -464,7 +468,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -492,7 +496,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

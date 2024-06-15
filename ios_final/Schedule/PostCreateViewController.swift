@@ -26,27 +26,16 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
         contentTextView.delegate = self
         updateCurrentDateLabel()
         
-        // 텍스트필드 설정
         titleTextField.placeholder = "제목"
-        titleTextField.backgroundColor = .clear
-        titleTextField.textColor = .white
-        titleTextField.layer.borderColor = UIColor.white.cgColor
-        titleTextField.layer.borderWidth = defaultBorderWidth
-        titleTextField.layer.cornerRadius = 5
-        titleTextField.clipsToBounds = true
+        contentTextView.text = "일정 입력하기"
         
+        configureTextField(titleTextField)
+        configureTextView(contentTextView)
+       
         // 텍스트필드 플레이스홀더 텍스트 색상 설정
         if let placeholder = titleTextField.placeholder {
             titleTextField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         }
-        
-        // 텍스트뷰 설정
-        contentTextView.text = placeholderText
-        contentTextView.layer.cornerRadius = 5
-        contentTextView.clipsToBounds = true
-        contentTextView.backgroundColor = .clear
-        contentTextView.layer.borderColor = UIColor.white.cgColor
-        contentTextView.layer.borderWidth = defaultBorderWidth
     }
     
     // 텍스트뷰 포커싱되면 플레이스홀더 삭제
@@ -144,7 +133,6 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
     
     // Firebase에서 날짜에 따른 글 정보 로드
     func loadPost(for date: Date, completion: @escaping (String?) -> Void) {
-        print("loadPost!!")
         guard let user = Auth.auth().currentUser else {
             completion(nil)
             return

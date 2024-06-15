@@ -15,7 +15,7 @@ extension UIViewController {
         textField.backgroundColor = .clear
         textField.layer.cornerRadius = 5
         textField.clipsToBounds = true
-        textField.delegate = self as UITextFieldDelegate
+        textField.delegate = self as? UITextFieldDelegate
         
         // 검사 해제
         disableChecks(for: textField)
@@ -39,14 +39,15 @@ extension UIViewController {
         textField.spellCheckingType = .no
         textField.smartInsertDeleteType = .no
         textField.autocapitalizationType = .none
+        textField.keyboardType = .default
     }
-
+    
     func disableChecks(for textView: UITextView) {
         textView.autocorrectionType = .no
         textView.spellCheckingType = .no
         textView.autocapitalizationType = .none
+        textView.keyboardType = .default
     }
- 
     
     func animateBorderWidth(for view: UIView, to width: CGFloat) {
         let animation = CABasicAnimation(keyPath: "borderWidth")
@@ -74,14 +75,17 @@ extension UIViewController {
             }
         }
     }
-
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
 
 // UITextFieldDelegate 확장
 extension UIViewController: UITextFieldDelegate {
     public func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.keyboardType = .asciiCapable
-        textField.reloadInputViews()
+        //textField.keyboardType = .asciiCapable
+        //textField.reloadInputViews()
         
         animateBorderWidth(for: textField, to: focusedBorderWidth)
     }

@@ -7,6 +7,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var nicknameLabel: UILabel!
     
+    var commentsViewController: CommentsViewController?
     var posts: [Post] = []
     var userId: String?
     
@@ -26,8 +27,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
     func setUserId(_ userId: String) {
         self.userId = userId
         
-        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-        
+        let currentUserId = Auth.auth().currentUser?.uid
         if userId == currentUserId {
             nicknameLabel.text = "나의 일정 목록"
         } else {
@@ -80,13 +80,15 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
 
+    var postIds: [String] = []
+
     func fetchPosts(by postIds: [String]) {
         let db = Firestore.firestore()
         let postsRef = db.collection("posts")
         
         let dispatchGroup = DispatchGroup()
         
-        var fetchedPosts: [Post] = []
+        var fetchedPostsWithIds: [(post: Post, id: String)] = []  // Post 객체와 문서 ID를 함께 저장
         
         for postId in postIds {
             dispatchGroup.enter()
@@ -96,9 +98,8 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
                 } else if let document = document, document.exists {
                     do {
                         let post = try document.data(as: Post.self)
-                        // isPublic 필드가 true인 경우에만 가져오기
                         if post.isPublic {
-                            fetchedPosts.append(post)
+                            fetchedPostsWithIds.append((post: post, id: postId))  // Post 객체와 문서 ID를 함께 저장
                         }
                     } catch {
                         print("Error decoding post with ID \(postId): \(error)")
@@ -111,7 +112,13 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         dispatchGroup.notify(queue: .main) {
-            self.posts = fetchedPosts.sorted { $0.timestamp > $1.timestamp }
+            // 작성 시간에 따라 정렬
+            let sortedPostsWithIds = fetchedPostsWithIds.sorted { $0.post.timestamp > $1.post.timestamp }
+            
+            // 각각의 배열에 저장
+            self.posts = sortedPostsWithIds.map { $0.post }
+            self.postIds = sortedPostsWithIds.map { $0.id }
+            
             if self.posts.isEmpty {
                 self.showNoPostsMessage()
             } else {
@@ -160,20 +167,29 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true) // 선택 해제
         let post = posts[indexPath.row]
-        navigateToPostDetail(with: post)
+        let postId = postIds[indexPath.row] // postIds 배열에서 해당 포스트의 ID를 가져옴
+        navigateToPostDetail(with: post, postId: postId)
     }
     
-    // Navigate to PostDetailViewController using performSegue
-    func navigateToPostDetail(with post: Post) {
-        self.performSegue(withIdentifier: "showPostDetail", sender: post)
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50 // 테이블 셀 높이
     }
-
-    // Prepare for segue and pass the post data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showPostDetail",
-           let postDetailVC = segue.destination as? PostDetailViewController,
-           let post = sender as? Post {
-            postDetailVC.setPost(post)
+    
+    func navigateToPostDetail(with post: Post, postId: String) {
+        // PostDetailViewController로 이동하는 코드
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let postDetailVC = storyboard.instantiateViewController(withIdentifier: "PostDetailViewController") as? PostDetailViewController {
+            postDetailVC.post = post // 포스트 객체를 전달
+            postDetailVC.postId = postId // 포스트 ID를 전달
+            
+            // 네비게이션 컨트롤러를 사용하여 화면 전환
+            if let navigationController = self.navigationController {
+                navigationController.pushViewController(postDetailVC, animated: true)
+            } else {
+                let navController = UINavigationController(rootViewController: postDetailVC)
+                navController.modalPresentationStyle = .fullScreen
+                present(navController, animated: true, completion: nil)
+            }
         }
     }
 }
