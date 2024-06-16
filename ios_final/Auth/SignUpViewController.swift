@@ -32,20 +32,20 @@ class SignUpViewController: UIViewController {
               let confirmPassword = confirmPasswordTextField.text, !confirmPassword.isEmpty,
               let nickname = nicknameTextField.text, !nickname.isEmpty else {
             // Show alert for missing fields
-            showAlert(title: "Error", message: "Please fill in all fields.")
+            showAlert(title: "경고", message: "모든 항목을 입력해주세요.")
             return
         }
         
         guard password == confirmPassword else {
             // Show alert for password mismatch
-            showAlert(title: "Error", message: "Passwords do not match.")
+            showAlert(title: "경고", message: "비밀번호가 일치하지 않습니다.")
             return
         }
         
         Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
             if let error = error {
                 // Show error alert
-                self.showAlert(title: "Error", message: error.localizedDescription)
+                self.showAlert(title: "에러", message: error.localizedDescription)
                 return
             }
             
@@ -54,9 +54,9 @@ class SignUpViewController: UIViewController {
             let db = Firestore.firestore()
             db.collection("users").document(user.uid).setData(["nickname": nickname]) { error in
                 if let error = error {
-                    self.showAlert(title: "Error", message: "Failed to save nickname: \(error.localizedDescription)")
+                    self.showAlert(title: "에러", message: "회원가입 시 닉네임 저장 에러: \(error.localizedDescription)")
                 } else {
-                    self.showAlert(title: "Success", message: "Successfully signed up!") {
+                    self.showAlert(title: "성공", message: "회원가입 성공!") {
                         self.dismiss(animated: true, completion: nil)
                     }
                 }

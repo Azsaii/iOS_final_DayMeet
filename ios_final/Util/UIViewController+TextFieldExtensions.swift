@@ -61,11 +61,23 @@ extension UIViewController {
     func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        if title == "Error" {
+        if title == "에러" || title == "경고" {
             let action = UIAlertAction(title: "OK", style: .default) { _ in
                 completion?()
             }
             alert.addAction(action)
+            self.present(alert, animated: true, completion: nil)
+        } else if title == "삭제 확인" || title == "언팔로우" {
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+                completion?()
+            }
+            let unfollowAction = UIAlertAction(title: "Unfollow", style: .destructive) { _ in
+                completion?()
+            }
+            
+            alert.addAction(cancelAction)
+            alert.addAction(title == "삭제 확인" ? deleteAction : unfollowAction)
             self.present(alert, animated: true, completion: nil)
         } else {
             self.present(alert, animated: true, completion: nil)
@@ -75,9 +87,18 @@ extension UIViewController {
             }
         }
     }
+
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    func setupButtonStyle(for button: UIButton) {
+        // 테두리 설정
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1.5
+        button.layer.cornerRadius = 5.0
+        button.clipsToBounds = true
     }
 }
 

@@ -12,7 +12,6 @@
 		654B854D2C16CFB00087F328 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 654B854C2C16CFB00087F328 /* AlamofireDynamic */; };
 		654D697C2C188CE800824D49 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 654D697B2C188CE800824D49 /* FSCalendar */; };
 		654D697E2C188FBD00824D49 /* MainViewController+Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D697D2C188FBD00824D49 /* MainViewController+Calendar.swift */; };
-		655926172C1AE6AC007C5DFB /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655926162C1AE6AC007C5DFB /* CustomButton.swift */; };
 		655926192C1AEE2A007C5DFB /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655926182C1AEE2A007C5DFB /* CustomColor.swift */; };
 		655F7BD32C16A47E00FFF781 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F7BD22C16A47E00FFF781 /* AppDelegate.swift */; };
 		655F7BD52C16A47E00FFF781 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655F7BD42C16A47E00FFF781 /* SceneDelegate.swift */; };
@@ -44,12 +43,11 @@
 /* Begin PBXFileReference section */
 		6524B1682C1C6BFF0076B547 /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		654D697D2C188FBD00824D49 /* MainViewController+Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+Calendar.swift"; sourceTree = "<group>"; };
-		655926162C1AE6AC007C5DFB /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		655926182C1AEE2A007C5DFB /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		655F7BCF2C16A47E00FFF781 /* ios_final.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ios_final.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		655F7BD22C16A47E00FFF781 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		655F7BD42C16A47E00FFF781 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		655F7BD62C16A47E00FFF781 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		655F7BD62C16A47E00FFF781 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		655F7BD92C16A47E00FFF781 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		655F7BDB2C16A47F00FFF781 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		655F7BDE2C16A47F00FFF781 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -185,7 +183,6 @@
 			isa = PBXGroup;
 			children = (
 				6562446C2C1B2CD50036C8A8 /* CustomTableViewCell.swift */,
-				655926162C1AE6AC007C5DFB /* CustomButton.swift */,
 				655926182C1AEE2A007C5DFB /* CustomColor.swift */,
 				6562446E2C1B3D7E0036C8A8 /* CustomTabBarController.swift */,
 				6595A6712C1A81FB00D6CA51 /* UIViewController+TextFieldExtensions.swift */,
@@ -305,7 +302,6 @@
 				65D24D072C172CB0002B93EA /* Post.swift in Sources */,
 				65D24D092C1731AC002B93EA /* PostDetailViewController.swift in Sources */,
 				655F7BD72C16A47E00FFF781 /* MainViewController.swift in Sources */,
-				655926172C1AE6AC007C5DFB /* CustomButton.swift in Sources */,
 				655F7BD32C16A47E00FFF781 /* AppDelegate.swift in Sources */,
 				655F7BD52C16A47E00FFF781 /* SceneDelegate.swift in Sources */,
 				655F7BFD2C16AA7200FFF781 /* SignUpViewController.swift in Sources */,
@@ -466,6 +462,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -494,6 +492,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;

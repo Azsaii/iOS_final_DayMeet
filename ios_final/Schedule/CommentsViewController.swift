@@ -7,8 +7,8 @@ protocol CommentsViewControllerDelegate: AnyObject {
     func scrollToBottom()
 }
 
-class CommentsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
-
+class CommentsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, CustomTableViewCellDelegate {
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commentTextView: UITextView!
     @IBOutlet weak var postCommentButton: UIButton!
@@ -17,17 +17,21 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     weak var delegate: CommentsViewControllerDelegate?
     
     let placeholderText = "댓글 입력하기"
-    var postId: String? {
-        didSet {
-            print("postId set to: \(postId ?? "nil")") // postId 설정 확인 로그
-            loadComments()
-            isCommentSaved = false // 새로 글을 로드하면 스크롤이 최하단으로 안가게 함
-        }
-    }
-    //var postId: String?
+    private var postId = ""
     var comments: [[String: Any]] = [] // 댓글 데이터를 저장할 배열 (딕셔너리 형태)
     var isCommentSaved = false // 댓글이 1회라도 저장되어야 화면이 최하단으로 스크롤되게 하기 위함.
     let commentHeight: CGFloat = 50 // 댓글 하나당 고정 높이
+    
+    public func setPostId(postId: String){
+        print("setPostId: \(postId)")
+        self.postId = postId
+        if postId == "" {
+            initComment()
+        } else {
+            loadComments()
+        }
+        isCommentSaved = false
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +43,9 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomCell")
         tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100 // 적절한 추정 높이 설정
+        
         tableViewHeightConstraint.constant = 0
         
         // 텍스트뷰 설정
@@ -51,6 +58,8 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         // 드래그 시 키보드 내림
         tableView.keyboardDismissMode = .onDrag
+        
+        postCommentButton.layer.cornerRadius = 5.0
     }
     
     func textViewDidChange(_ textView: UITextView) {
@@ -73,7 +82,6 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         // 댓글 컨테이너 높이 업데이트
-        //tableView.layoutIfNeeded()
         let tableViewContentHeight = tableView.contentSize.height
         let otherSubviewsHeight: CGFloat = 25 // 예: 댓글 입력 필드와 버튼의 높이 합산
         let newContainerHeight = tableViewContentHeight + otherSubviewsHeight + newHeight
@@ -103,7 +111,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func postCommentButtonTapped(_ sender: UIButton) {
         guard let commentText = commentTextView.text, !commentText.isEmpty else {
-            showAlert(title: "Error", message: "댓글을 입력하세요.")
+            showAlert(title: "경고", message: "댓글을 입력해주세요.")
             return
         }
         
@@ -112,11 +120,11 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     
     func saveComment(_ comment: String) {
         guard let user = Auth.auth().currentUser else {
-            showAlert(title: "Error", message: "You must be logged in to post a comment.")
+            showAlert(title: "경고", message: "댓글을 작성하려면 로그인이 필요합니다.")
             return
         }
-        guard let postId = postId else {
-            showAlert(title: "Error", message: "Invalid post ID.")
+        if postId == "" {
+            showAlert(title: "경고", message: "일정을 저장해야 댓글 작성이 가능합니다.")
             return
         }
         
@@ -131,15 +139,18 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         ]
         
         let db = Firestore.firestore()
+        let document = db.collection("posts").document(postId).collection("comments").document()
         
-        db.collection("posts").document(postId).collection("comments").addDocument(data: commentData) { error in
+        document.setData(commentData) { error in
             if let error = error {
                 DispatchQueue.main.async {
-                    self.showAlert(title: "Error", message: "Error saving comment: \(error.localizedDescription)")
+                    self.showAlert(title: "에러", message: "댓글 저장 에러: \(error.localizedDescription)")
                 }
             } else {
+                var newCommentData = commentData
+                newCommentData["id"] = document.documentID // 고유 ID 추가
                 DispatchQueue.main.async {
-                    self.comments.append(commentData)
+                    self.comments.append(newCommentData)
                     self.commentTextView.text = ""
                     self.tableView.reloadData()
                     self.isCommentSaved = true // 댓글이 저장되었음을 표시
@@ -150,8 +161,8 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func loadComments() {
-        guard let postId = postId else {
-            showAlert(title: "Error", message: "Invalid post ID.")
+        if postId == "" {
+            showAlert(title: "에러", message: "잘못된 일정 id")
             return
         }
         
@@ -159,15 +170,19 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         db.collection("posts").document(postId).collection("comments").getDocuments { (querySnapshot, error) in
             if let error = error {
                 DispatchQueue.main.async {
-                    self.showAlert(title: "Error", message: "Error loading comments: \(error.localizedDescription)")
+                    self.showAlert(title: "에러", message: "댓글 로딩 에러: \(error.localizedDescription)")
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.comments = querySnapshot?.documents.compactMap { $0.data() } ?? []
+                    self.comments = querySnapshot?.documents.compactMap { document in
+                        var data = document.data()
+                        data["id"] = document.documentID
+                        return data
+                    } ?? []
                     
                     // 댓글 없으면 테이블뷰 초기화.
                     if self.comments.isEmpty {
-                        print("empty!")
+                        print("comment empty!")
                         self.comments = []
                     }
                     
@@ -186,33 +201,21 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
-    
+
     func initComment() {
-        
         // 댓글 창 초기화
         comments = []
         tableView.reloadData()
         updateTableViewHeight()
     }
     
-    func updateTableViewHeight() {
-        tableView.layoutIfNeeded()
-        let tableViewContentHeight = tableView.contentSize.height
+    @objc private func deleteButtonTapped(_ sender: UIButton) {
+        guard let cell = sender.superview?.superview as? CustomTableViewCell,
+              let indexPath = tableView.indexPath(for: cell) else { return }
         
-        let commentCount = comments.count// comments 배열에 있는 댓글 수 확인
-        let otherSubviewsHeight: CGFloat = 60 // 예: 댓글 입력 필드와 버튼의 높이 합산
-        let newContainerHeight = otherSubviewsHeight + CGFloat(commentCount) * commentHeight
-        
-        tableViewHeightConstraint.constant = newContainerHeight - otherSubviewsHeight
-        delegate?.updateCommentsContainerHeight(newContainerHeight)
-        if isCommentSaved {delegate?.scrollToBottom()}
-    }
-    
-    
-    func showAlert(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alertController, animated: true, completion: nil)
+        showAlert(title: "삭제 확인", message: "정말 삭제하시겠습니까?") {
+            self.deleteComment(at: indexPath)
+        }
     }
     
     // UITableViewDataSource Methods
@@ -221,16 +224,68 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return commentHeight // 테이블 셀 높이
+        return UITableView.automaticDimension
     }
     
+    func updateTableViewHeight() {
+        tableView.layoutIfNeeded()
+        var totalHeight: CGFloat = 0
+        
+        for i in 0..<comments.count {
+            let indexPath = IndexPath(row: i, section: 0)
+            totalHeight += tableView.rectForRow(at: indexPath).height
+        }
+        
+        let otherSubviewsHeight: CGFloat = 60 // 댓글 입력 필드와 버튼의 높이 합산
+        let newContainerHeight = totalHeight + otherSubviewsHeight
+        
+        tableViewHeightConstraint.constant = totalHeight
+        delegate?.updateCommentsContainerHeight(newContainerHeight)
+        if isCommentSaved {
+            delegate?.scrollToBottom()
+        }
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomTableViewCell
         let commentData = comments[indexPath.row]
         if let commentText = commentData["comment"] as? String,
-           let authorName = commentData["authorName"] as? String {
-            cell.textLabel?.text = "\(authorName): \(commentText)"
+           let authorName = commentData["authorName"] as? String,
+           let authorId = commentData["authorId"] as? String {
+            cell.commentLabel.text = commentText
+            cell.authorLabel.text = authorName
+            cell.deleteButton.isHidden = authorId != Auth.auth().currentUser?.uid
+            cell.delegate = self // 델리게이트 설정
+            setupButtonStyle(for: cell.deleteButton) // 버튼 스타일 설정
         }
         return cell
     }
+    
+    func didTapDeleteButton(on cell: CustomTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        
+        showAlert(title: "삭제 확인", message: "정말 삭제하시겠습니까?") {
+            self.deleteComment(at: indexPath)
+        }
+    }
+    
+    private func deleteComment(at indexPath: IndexPath) {
+        let commentData = comments[indexPath.row]
+        guard let commentId = commentData["id"] as? String else { return }
+        print("delete commentid: \(commentId)")
+        let db = Firestore.firestore()
+        db.collection("posts").document(postId).collection("comments").document(commentId).delete { error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.showAlert(title: "에러", message: "댓글 삭제 에러: \(error.localizedDescription)")
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.comments.remove(at: indexPath.row)
+                    self.tableView.reloadData()
+                    self.updateTableViewHeight()
+                }
+            }
+        }
+    }
+
 }

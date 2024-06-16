@@ -12,11 +12,13 @@ import FirebaseStorage
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+    var window: UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure() // 파이어베이스 활성화
-        
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//        window?.rootViewController = LaunchScreenViewController()
+//        window?.makeKeyAndVisible()
         return true
     }
     

@@ -19,7 +19,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
         
         searchTextField.delegate = self
         searchTextField.keyboardType = .asciiCapable
-
+        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -29,7 +29,6 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         searchTextField.setRightClearButton(target: self, action: #selector(clearText)) // 서치바에 x 버튼추가
         configureTextField(searchTextField) // 초기 설정
-        fetchFriends() // 팔로우 목록 가져오기
         
         // 키보드가 올라왔을 때 드래그하면 내려간다.
         tableView.keyboardDismissMode = .onDrag
@@ -38,6 +37,20 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
         Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             self?.fetchFriends()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+        
+        // 화면이 나타날 때마다 초기화 작업
+        searchTextField.text = ""
+        handleTextChange("")
+    }
+    
+    func setupNavigationBar() { // 뒤로가기 버튼 스타일 지정
+        navigationController?.navigationBar.barTintColor = UIColor.darkBlue
+        navigationController?.navigationBar.tintColor = UIColor.white
     }
     
     @objc private func clearText() {
@@ -78,7 +91,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // 테이블뷰 배경 업데이트
     func updateTableViewBackground() {
-
+        
         if allFriends.isEmpty && !isSearching {
             let noFriendsLabel = UILabel()
             if Auth.auth().currentUser == nil {
@@ -106,11 +119,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // UITableViewDataSource 메소드
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching {
-            return filteredFriends.count
-        } else {
-            return allFriends.count
-        }
+        return isSearching ? filteredFriends.count : allFriends.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -122,27 +131,29 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
             configureCell(cell, with: allFriends[indexPath.row])
         }
         
+        cell.showDeleteButton = false // 삭제 버튼 숨김
+        cell.showSeparator = false // 구분선 숨김
         return cell
     }
-
+    
     func textFieldEditingChanged(_ textField: UITextField) {
         handleTextChange(textField.text ?? "")
     }
-
+    
     override func textFieldDidEndEditing(_ textField: UITextField) {
         animateBorderWidth(for: textField, to: defaultBorderWidth)
         if textField.text?.isEmpty ?? true {
             handleTextChange("")
         }
     }
-
+    
     // 검색 텍스트바 사용 여부에 따라 레이블 변경
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? string
         handleTextChange(currentText)
         return true
     }
-
+    
     // 텍스트 변경 처리를 위한 함수
     private func handleTextChange(_ currentText: String) {
         if currentText.isEmpty {
@@ -255,9 +266,8 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
         
         if sender.isSelected {
             // 팔로우 취소 확인 알림창
-            let alert = UIAlertController(title: "Unfollow", message: "Are you sure you want to unfollow \(followUser.nickname)?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Unfollow", style: .destructive, handler: { _ in
+            showAlert(title: "언팔로우", message: "\(followUser.nickname) 님을 언팔로우 하시겠습니까?") { [weak self] in
+                guard let self = self else { return }
                 let followsRef = db.collection("users").document(userId).collection("follows").document(followUser.uid)
                 
                 followsRef.delete { error in
@@ -276,9 +286,9 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
                         self.updateTableViewBackground()
                     }
                 }
-            }))
-            present(alert, animated: true, completion: nil)
-        } else {
+            }
+        }
+        else {
             // 팔로우하지 않은 경우 팔로우
             let followsRef = db.collection("users").document(userId).collection("follows").document(followUser.uid)
             
@@ -294,19 +304,14 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // 셀 클릭 시 네비게이트
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let selectedUser = isSearching ? filteredFriends[indexPath.row] : allFriends[indexPath.row]
         selectedUserId = selectedUser.uid
-        performSegue(withIdentifier: "showUserPosts", sender: self)
-    }
-    
-    // prepare(for:sender:) 메서드 추가
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showUserPosts" {
-            if let userPostsVC = segue.destination as? UserPostsViewController {
-                if let userId = selectedUserId {
-                    userPostsVC.setUserId(userId)
-                }
-            }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let userPostsVC = storyboard.instantiateViewController(withIdentifier: "UserPostsViewController") as? UserPostsViewController {
+            userPostsVC.setUserId(selectedUserId!)
+            self.navigationController?.pushViewController(userPostsVC, animated: true)
         }
     }
 }

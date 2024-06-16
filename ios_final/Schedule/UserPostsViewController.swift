@@ -9,6 +9,7 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     var commentsViewController: CommentsViewController?
     var posts: [Post] = []
+    var postIds: [String] = []
     var userId: String?
     
     override func viewDidLoad() {
@@ -20,11 +21,22 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         // UITableViewCell 등록
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "PostCell")
         
-        // 뒤로가기 버튼 설정
-        setupNavigationBar()
+        Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
+            guard let self = self else { return }
+            self.fetchUserPosts()
+        }
+        
+        // 새로운 일정이 생성되었을 때 알림을 수신하도록 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewPostCreated), name: NSNotification.Name("NewPostCreated"), object: nil)
     }
     
+    @objc func handleNewPostCreated() {
+        fetchUserPosts()
+    }
+    
+    
     func setUserId(_ userId: String) {
+        
         self.userId = userId
         
         let currentUserId = Auth.auth().currentUser?.uid
@@ -44,20 +56,11 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
             }
         }
     }
-
-    func setupNavigationBar() {
-        let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.leftBarButtonItem = backButton
-    }
-
-    @objc func backButtonTapped() {
-        dismiss(animated: true, completion: nil)
-    }
-
     
     func fetchUserPosts() {
         guard let userId = userId ?? Auth.auth().currentUser?.uid else {
             print("User not logged in or userId not set")
+            setClearTable() // 테이블 뷰 초기화
             return
         }
         print("id: \(userId)")
@@ -72,16 +75,15 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
                 } ?? []
                 
                 if postIds.isEmpty {
-                    self.showNoPostsMessage()
+                    self.setClearTable() // 테이블 뷰 초기화
                 } else {
+                    self.hideNoPostsMessage()
                     self.fetchPosts(by: postIds)
                 }
             }
         }
     }
-
-    var postIds: [String] = []
-
+    
     func fetchPosts(by postIds: [String]) {
         let db = Firestore.firestore()
         let postsRef = db.collection("posts")
@@ -112,8 +114,16 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         dispatchGroup.notify(queue: .main) {
-            // 작성 시간에 따라 정렬
-            let sortedPostsWithIds = fetchedPostsWithIds.sorted { $0.post.timestamp > $1.post.timestamp }
+            // 작성 날짜에 따라 정렬
+            let sortedPostsWithIds = fetchedPostsWithIds.sorted {
+                if $0.post.year != $1.post.year {
+                    return $0.post.year > $1.post.year
+                } else if $0.post.month != $1.post.month {
+                    return $0.post.month > $1.post.month
+                } else {
+                    return $0.post.day > $1.post.day
+                }
+            }
             
             // 각각의 배열에 저장
             self.posts = sortedPostsWithIds.map { $0.post }
@@ -126,7 +136,14 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
             }
         }
     }
-
+    
+    func setClearTable() {
+        posts.removeAll()
+        postIds.removeAll()
+        showNoPostsMessage()
+        tableView.reloadData() // 테이블 뷰 초기화
+    }
+    
     func showNoPostsMessage() {
         let noPostsLabel = UILabel()
         noPostsLabel.text = "추가된 일정이 없습니다"
@@ -138,7 +155,11 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.backgroundView = noPostsLabel
         tableView.separatorStyle = .none
     }
-
+    
+    func hideNoPostsMessage() {
+        tableView.backgroundView = nil
+        tableView.separatorStyle = .singleLine
+    }
     
     // UITableViewDataSource 및 UITableViewDelegate 메서드 구현
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -160,9 +181,15 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // 셀의 선택 스타일을 none으로 설정
         cell.selectionStyle = .none
+        
+        cell.showDeleteButton = false // 삭제 버튼 숨김
+        cell.showSeparator = false // 구분선 숨김
         return cell
     }
-
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50 // 테이블 셀 높이
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true) // 선택 해제
@@ -171,25 +198,12 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         navigateToPostDetail(with: post, postId: postId)
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50 // 테이블 셀 높이
-    }
-    
     func navigateToPostDetail(with post: Post, postId: String) {
-        // PostDetailViewController로 이동하는 코드
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let postDetailVC = storyboard.instantiateViewController(withIdentifier: "PostDetailViewController") as? PostDetailViewController {
-            postDetailVC.post = post // 포스트 객체를 전달
-            postDetailVC.postId = postId // 포스트 ID를 전달
-            
-            // 네비게이션 컨트롤러를 사용하여 화면 전환
-            if let navigationController = self.navigationController {
-                navigationController.pushViewController(postDetailVC, animated: true)
-            } else {
-                let navController = UINavigationController(rootViewController: postDetailVC)
-                navController.modalPresentationStyle = .fullScreen
-                present(navController, animated: true, completion: nil)
-            }
+            postDetailVC.post = post
+            postDetailVC.postId = postId
+            self.navigationController?.pushViewController(postDetailVC, animated: true)
         }
     }
 }

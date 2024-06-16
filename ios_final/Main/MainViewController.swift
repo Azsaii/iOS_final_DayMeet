@@ -28,9 +28,8 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         super.viewDidLoad()
         setupAuthStateListener()
         setCalendarUI()
-        addPostCreateViewController()
         addCommentsViewController()
-        updateDateLabel(with: selectedDate)
+        addPostCreateViewController()
         
         loginLogoutButton.titleLabel?.font = customFont
         loginLogoutButton.layer.borderColor = UIColor.white.cgColor
@@ -44,6 +43,13 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         
         // KeyboardEvent의 setupKeyboardEvent
         setupKeyboardEvent()
+        
+        // FirebaseAuth 상태 변경 리스너 추가. 로그인/로그아웃 시 다시 팔로우 목록을 가져온다.
+        Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
+            guard let self = self else { return }
+            self.updateDateLabel(with: self.selectedDate)
+            self.calendar.select(self.selectedDate)
+        }
     }
     
     // KeyboardEvent에서 사용된 addObserver는 자동으로 제거가 안됨
@@ -114,7 +120,6 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
             guard let self = self else { return }
             if let postId = postId {
                 print("Received postId: \(postId)") // postId 로그 출력
-                self.commentsViewController?.postId = postId
             } else {
                 print("No postId found for the selected date.") // postId가 없을 때 로그 출력
                 self.commentsViewController?.initComment() // 댓글창 초기화

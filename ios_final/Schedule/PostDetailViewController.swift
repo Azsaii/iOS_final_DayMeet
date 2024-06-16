@@ -16,7 +16,7 @@ class PostDetailViewController: UIViewController, CommentsViewControllerDelegate
     var postId: String? {
         didSet {
             // postId가 설정될 때 commentsViewController에 전달
-            commentsViewController?.postId = postId
+            commentsViewController?.setPostId(postId: postId!)
         }
     }
     var post: Post?
@@ -41,7 +41,7 @@ class PostDetailViewController: UIViewController, CommentsViewControllerDelegate
         
         // 댓글 뷰 컨트롤러가 설정된 후 postId를 전달
         if let postId = postId {
-            commentsViewController?.postId = postId
+            commentsViewController?.setPostId(postId: postId)
         }
         
         // 키보드가 올라왔을 때 드래그하면 내려간다.
@@ -49,31 +49,6 @@ class PostDetailViewController: UIViewController, CommentsViewControllerDelegate
         
         // KeyboardEvent의 setupKeyboardEvent
         setupKeyboardEvent()
-        
-        // 네비게이션 바 설정
-        setupNavigationBar()
-    }
-    
-    func setupNavigationBar() {
-        // 네비게이션 바의 배경색 설정
-        navigationController?.navigationBar.barTintColor = UIColor.darkBlue
-
-        if navigationController?.viewControllers.count == 1 {
-            let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(didTapBackButton))
-            
-            // 폰트와 텍스트 색상을 설정
-            let attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.white,
-                .font: UIFont(name: "SpoqaHanSans-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14)
-            ]
-            backButton.setTitleTextAttributes(attributes, for: .normal)
-            
-            navigationItem.leftBarButtonItem = backButton
-        }
-    }
-    
-    @objc func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
     }
     
     // KeyboardEvent에서 사용된 addObserver는 자동으로 제거가 안됨
