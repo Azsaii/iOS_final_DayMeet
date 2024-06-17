@@ -3,9 +3,8 @@ import FirebaseAuth
 import FSCalendar
 
 class MainViewController: UIViewController, CommentsViewControllerDelegate, KeyboardEvent {
-
+    
     @IBOutlet weak var loginLogoutButton: UIButton!
-    @IBOutlet weak var myPostsButton: UIButton!
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var bodyView: UIView!
@@ -13,6 +12,8 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
     @IBOutlet weak var postView: UIView!
     @IBOutlet weak var calendar: FSCalendar!
     weak var delegate: CalendarDelegate?
+    
+    var specialDates: [String] = [] // 현재 보이는 달에서 일정이 저장된 날짜들을 저장하는 배열
     var selectedDate: Date = Date()
     let customFont = UIFont.SpoqaHanSans(type: .Light, size: 20)
     
@@ -28,6 +29,7 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         super.viewDidLoad()
         setupAuthStateListener()
         setCalendarUI()
+        calendarCurrentPageDidChange(calendar) // 일정 있는 날짜 색 변경
         addCommentsViewController()
         addPostCreateViewController()
         
@@ -44,12 +46,20 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         // KeyboardEvent의 setupKeyboardEvent
         setupKeyboardEvent()
         
-        // FirebaseAuth 상태 변경 리스너 추가. 로그인/로그아웃 시 다시 팔로우 목록을 가져온다.
+        // 로그인 / 로그아웃 리스터
         Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             guard let self = self else { return }
-            self.updateDateLabel(with: self.selectedDate)
-            self.calendar.select(self.selectedDate)
+            self.updateDateLabel(with: self.selectedDate) // 오늘 날짜로 레이블 초기화
+            self.calendar.select(self.selectedDate) // 오늘 날짜로 달력에서 선택
+            calendarCurrentPageDidChange(calendar) // 일정 있는 날짜 색 변경
         }
+        
+        // 일정이 생성/삭제 되었을 때 알림을 수신하도록 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewPostCreated), name: NSNotification.Name("PostUpdated"), object: nil)
+    }
+    
+    @objc func handleNewPostCreated() {
+        calendarCurrentPageDidChange(calendar) // 일정 있는 날짜 색 변경c
     }
     
     // KeyboardEvent에서 사용된 addObserver는 자동으로 제거가 안됨
@@ -122,11 +132,10 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
                 print("Received postId: \(postId)") // postId 로그 출력
             } else {
                 print("No postId found for the selected date.") // postId가 없을 때 로그 출력
-                self.commentsViewController?.initComment() // 댓글창 초기화
+                self.commentsViewController?.setPostId(postId: "") // 댓글창 초기화
             }
         }
     }
-    
     
     private func isLoginViewControllerPresented() -> Bool {
         return presentedViewController is LoginViewController
@@ -135,30 +144,25 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
     @IBAction func loginLogoutButtonTapped(_ sender: UIButton) {
         if Auth.auth().currentUser != nil {
             // 로그아웃 처리
-            do {
-                try Auth.auth().signOut()
-                // 로그아웃 후 UI 업데이트
-                updateUIForLoginState()
-                print("User logged out successfully")
-                return
-            } catch let signOutError as NSError {
-                print("Error signing out: %@", signOutError)
+            showAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?") { [weak self] in
+                guard let self = self else { return }
+                do {
+                    try Auth.auth().signOut()
+                    // 로그아웃 후 UI 업데이트
+                    updateUIForLoginState()
+                    print("User logged out successfully")
+                    return
+                } catch let signOutError as NSError {
+                    print("Error signing out: %@", signOutError)
+                }
             }
+            
         } else {
             // 로그인 화면 표시
             if !isLoginViewControllerPresented() {
                 print("Showing login view controller")
                 performSegue(withIdentifier: "showLogin", sender: self)
             }
-        }
-    }
-    
-    @IBAction func myPostsButtonTapped(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let userPostsVC = storyboard.instantiateViewController(withIdentifier: "UserPostsViewController") as? UserPostsViewController {
-            let navController = UINavigationController(rootViewController: userPostsVC)
-            navController.modalPresentationStyle = .fullScreen
-            self.present(navController, animated: true, completion: nil)
         }
     }
     
@@ -194,4 +198,3 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         }
     }
 }
-

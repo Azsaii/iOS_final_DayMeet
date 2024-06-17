@@ -17,6 +17,10 @@ class LoginViewController: UIViewController {
         // 스타일, 검사 설정
         configureTextField(emailTextField)
         configureTextField(passwordTextField)
+        
+        // 버튼 모서리 둥글게
+        loginButton.layer.cornerRadius = 5.0
+        signUpButton.layer.cornerRadius = 5.0
     }
     
     @IBAction func loginButtonTapped(_ sender: UIButton) {
@@ -35,7 +39,7 @@ class LoginViewController: UIViewController {
             }
             
             // Successfully logged in
-            self.showAlert(title: "성공", message: "로그인 성공!") {
+            self.showAlert(title: "성공", message: "로그인 완료") {
                 self.dismiss(animated: true, completion: nil)
             }
         }

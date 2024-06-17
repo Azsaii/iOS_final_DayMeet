@@ -23,14 +23,8 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     let commentHeight: CGFloat = 50 // 댓글 하나당 고정 높이
     
     public func setPostId(postId: String){
-        print("setPostId: \(postId)")
         self.postId = postId
-        if postId == "" {
-            initComment()
-        } else {
-            loadComments()
-        }
-        isCommentSaved = false
+        postId == "" ? initComment() : loadComments() // 변경된 날짜의 일정이 없는경우 댓글 초기화, 있으면 댓글 로드
     }
     
     override func viewDidLoad() {
@@ -155,6 +149,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                     self.tableView.reloadData()
                     self.isCommentSaved = true // 댓글이 저장되었음을 표시
                     self.updateTableViewHeight()
+                    self.isCommentSaved = false // 스크롤 막기
                 }
             }
         }
@@ -245,6 +240,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             delegate?.scrollToBottom()
         }
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomTableViewCell
         let commentData = comments[indexPath.row]
@@ -287,5 +283,4 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
-
 }

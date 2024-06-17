@@ -216,7 +216,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource, UITableVie
         cell.textLabel?.text = user.nickname
         
         // 로그아웃 상태면 팔로우 버튼 추가 안하고 종료한다.
-        guard let userId = Auth.auth().currentUser?.uid else {
+        guard let _ = Auth.auth().currentUser?.uid else {
             cell.accessoryView = nil
             return
         }

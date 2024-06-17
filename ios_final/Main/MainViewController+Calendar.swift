@@ -1,5 +1,7 @@
 import UIKit
 import FSCalendar
+import FirebaseFirestore
+import FirebaseAuth
 
 protocol CalendarDelegate: AnyObject {
     func dateUpdated(date: String)
@@ -77,56 +79,114 @@ extension MainViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalend
         return formatter
     }
 
+    // 날짜를 선택했을 때 할 일을 지정
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        updateDateLabel(with: date) // 선택한 날짜로 레이블 업데이트
+        let dateString = dateFormatter.string(from: date)
+        self.delegate?.dateUpdated(date: dateString)
+    }
+
+    // 선택된 날짜의 배경색 지정
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
+        //return UIColor(red: 255/255.0, green: 0/255.0, blue: 50/255.0, alpha: 1.0)
+        return UIColor.white
+    }
+    
+    // 선택된 날짜의 글자색 지정
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleSelectionColorFor date: Date) -> UIColor? {
+        return UIColor.darkBlue
+    }
+    
+    // 날짜 배경색 지정
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
+        let today = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        if dateFormatter.string(from: date) == dateFormatter.string(from: today) {
+            return UIColor.clear // 오늘 날짜 배경색
+        } else {
+            return nil // 오늘 아닌 날짜 배경색
+        }
+    }
+    
+    // 날짜 글자색 지정
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+        let today = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let dateString = dateFormatter.string(from: date)
+        
+        if dateFormatter.string(from: date) == dateFormatter.string(from: today) {
+            return UIColor(red: 255/255.0, green: 0/255.0, blue: 50/255.0, alpha: 1.0) // 오늘 날짜 색상
+        } else if specialDates.contains(dateString) {
+            return UIColor.yellow // 일정 있는 날짜 색 지정
+        } else {
+            return UIColor.white // 일정 없는 날짜 색 지정
+        }
+    }
+
+    
+    // 선택한 달이 변경될 때마다 리로드
+    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        let currentPage = calendar.currentPage
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: currentPage)
+        let month = calendar.component(.month, from: currentPage)
+
+        fetchSpecialDates(forYear: year, month: month) { dates in
+            self.specialDates = dates
+            self.calendar.reloadData()
+        }
+    }
+
+    private func fetchSpecialDates(forYear year: Int, month: Int, completion: @escaping ([String]) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion([])
+            return
+        }
+
+        let db = Firestore.firestore()
+        let postsCollection = db.collection("users").document(userId).collection("posts")
+        
+        var dates: [String] = []
+        
+        postsCollection.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error)")
+                completion(dates)
+                return
+            }
+            
+            for document in querySnapshot!.documents {
+                let data = document.data()
+                if let date = data["date"] as? String {
+                    let dateComponents = date.split(separator: "-")
+                    if dateComponents.count == 3,
+                       let dateYear = Int(dateComponents[0]),
+                       let dateMonth = Int(dateComponents[1]),
+                       dateYear == year,
+                       dateMonth == month {
+                        dates.append(date)
+                    }
+                }
+            }
+            
+            completion(dates)
+        }
+    }
+
     // 날짜를 선택했을 때 할일을 지정
 //    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
 //        let dateString = dateFormatter.string(from: date)
 //        self.navigationController?.popViewController(animated: true)
 //        self.delegate?.dateUpdated(date: dateString)
 //    }
-    // 날짜를 선택했을 때 할 일을 지정
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        updateDateLabel(with: date) // 선택한 날짜로 레이블 업데이트
-        
-        let dateString = dateFormatter.string(from: date)
-        self.delegate?.dateUpdated(date: dateString)
-    }
-
-    // 선택된 날짜의 채워진 색상 지정
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
-        return UIColor(red: 255/255.0, green: 0/255.0, blue: 50/255.0, alpha: 1.0)
-    }
-
+    
     // 선택된 날짜 테두리 색상
 //    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderSelectionColorFor date: Date) -> UIColor? {
 //        return UIColor.black.withAlphaComponent(0)
 //    }
-    
-    // 날짜 숫자 색상
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-        let today = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        if dateFormatter.string(from: date) == dateFormatter.string(from: today) {
-            return UIColor(red: 255/255.0, green: 0/255.0, blue: 50/255.0, alpha: 1.0)
-
-        }
-        else {
-            return UIColor.white
-        }
-    }
-
-    // 오늘과 오늘이 아닌 날 테두리 색
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
-        let today = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        if dateFormatter.string(from: date) == dateFormatter.string(from: today) {
-            return UIColor.clear
-        } else {
-            return nil
-        }
-    }
-
     
     // subtitle의 디폴트 색상
 //    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, subtitleDefaultColorFor date: Date) -> UIColor? {
@@ -134,7 +194,6 @@ extension MainViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalend
 //    }
     
     // 원하는 날짜 아래에 subtitle 지정
-    // 오늘 날짜에 오늘이라는 글자를 추가해보았다
 //    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
 //        switch dateFormatter.string(from: date) {
 //        case dateFormatter.string(from: Date()):

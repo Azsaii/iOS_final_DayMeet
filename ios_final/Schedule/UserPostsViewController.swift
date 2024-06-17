@@ -26,14 +26,13 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
             self.fetchUserPosts()
         }
         
-        // 새로운 일정이 생성되었을 때 알림을 수신하도록 등록
-        NotificationCenter.default.addObserver(self, selector: #selector(handleNewPostCreated), name: NSNotification.Name("NewPostCreated"), object: nil)
+        // 일정이 생성/삭제 되었을 때 알림을 수신하도록 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewPostCreated), name: NSNotification.Name("PostUpdated"), object: nil)
     }
     
     @objc func handleNewPostCreated() {
         fetchUserPosts()
     }
-    
     
     func setUserId(_ userId: String) {
         
@@ -63,7 +62,6 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
             setClearTable() // 테이블 뷰 초기화
             return
         }
-        print("id: \(userId)")
         
         let db = Firestore.firestore()
         db.collection("users").document(userId).collection("posts").getDocuments { (querySnapshot, error) in
@@ -85,6 +83,8 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func fetchPosts(by postIds: [String]) {
+        
+        let currentUser = Auth.auth().currentUser
         let db = Firestore.firestore()
         let postsRef = db.collection("posts")
         
@@ -100,12 +100,19 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
                 } else if let document = document, document.exists {
                     do {
                         let post = try document.data(as: Post.self)
-                        if post.isPublic {
-                            fetchedPostsWithIds.append((post: post, id: postId))  // Post 객체와 문서 ID를 함께 저장
+                        if let currentUser = Auth.auth().currentUser {
+                            // 로그인 상태일 때 본인 일정은 모두 볼 수 있고, 본인 일정이 아니면 공개된 일정만 볼 수 있음
+                            if post.isPublic || post.authorId == currentUser.uid {
+                                fetchedPostsWithIds.append((post: post, id: postId))
+                            }
+                        } else {
+                            // 로그아웃 상태인 경우 공개된 일정만 볼 수 있음
+                            if post.isPublic {
+                                fetchedPostsWithIds.append((post: post, id: postId))
+                            }
+                        }                    } catch {
+                            print("Error decoding post with ID \(postId): \(error)")
                         }
-                    } catch {
-                        print("Error decoding post with ID \(postId): \(error)")
-                    }
                 } else {
                     print("No document found with ID \(postId)")
                 }

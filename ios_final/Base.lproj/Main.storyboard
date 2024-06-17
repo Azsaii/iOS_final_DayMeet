@@ -216,7 +216,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="En5-8z-egj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3475.5725190839694" y="638.73239436619724"/>
+            <point key="canvasLocation" x="2549" y="639"/>
         </scene>
         <!--Item-->
         <scene sceneID="XeY-5l-ckv">
@@ -484,13 +484,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="363" height="34"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="닉네임" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZuE-xG-5dX">
-                                                <rect key="frame" x="0.0" y="0.0" width="61" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="72" height="34"/>
                                                 <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Bold" family="Spoqa Han Sans Neo" pointSize="22"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cE9-r2-Utp">
-                                                <rect key="frame" x="124" y="0.0" width="239" height="34"/>
+                                                <rect key="frame" x="135" y="0.0" width="228" height="34"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -502,13 +502,13 @@
                                         <rect key="frame" x="0.0" y="60" width="363" height="34"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jig-b9-4Y1">
-                                                <rect key="frame" x="0.0" y="0.0" width="23" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="72" height="34"/>
                                                 <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Bold" family="Spoqa Han Sans Neo" pointSize="22"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SAs-Yi-mMY">
-                                                <rect key="frame" x="86" y="0.0" width="277" height="34"/>
+                                                <rect key="frame" x="135" y="0.0" width="228" height="34"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -520,13 +520,13 @@
                                         <rect key="frame" x="0.0" y="120" width="363" height="34"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="비밀번호" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3XO-Ns-ZRu">
-                                                <rect key="frame" x="0.0" y="0.0" width="81" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="110" height="34"/>
                                                 <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Bold" family="Spoqa Han Sans Neo" pointSize="22"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RxP-FV-886">
-                                                <rect key="frame" x="106" y="0.0" width="257" height="34"/>
+                                                <rect key="frame" x="135" y="0.0" width="228" height="34"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -568,6 +568,11 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="SAs-Yi-mMY" firstAttribute="leading" secondItem="TrU-ta-6fd" secondAttribute="leading" id="Ri5-wN-DHh"/>
+                                    <constraint firstItem="RxP-FV-886" firstAttribute="leading" secondItem="TrU-ta-6fd" secondAttribute="leading" id="snX-v8-gzl"/>
+                                    <constraint firstItem="cE9-r2-Utp" firstAttribute="leading" secondItem="TrU-ta-6fd" secondAttribute="leading" id="y6s-0e-CR7"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="SvB-TB-pE7"/>
@@ -603,13 +608,13 @@
                                 <rect key="frame" x="15" y="69" width="363" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="선택 날짜" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHH-w6-86r">
-                                        <rect key="frame" x="0.0" y="0.0" width="254.33333333333334" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="252.66666666666666" height="30"/>
                                         <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Regular" family="Spoqa Han Sans Neo" pointSize="20"/>
                                         <color key="textColor" red="1" green="1" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="공개" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewF-zb-hU7">
-                                        <rect key="frame" x="269.33333333333331" y="0.0" width="29.666666666666686" height="30"/>
+                                        <rect key="frame" x="267.66666666666669" y="0.0" width="31.333333333333314" height="30"/>
                                         <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Regular" family="Spoqa Han Sans Neo" pointSize="17"/>
                                         <color key="textColor" red="1" green="1" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -640,14 +645,14 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Uq8-xf-uFV">
-                                        <rect key="frame" x="0.0" y="70" width="361" height="125"/>
+                                        <rect key="frame" x="0.0" y="70" width="361" height="121.66666666666669"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Regular" family="Spoqa Han Sans Neo" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uyO-gz-ef6" customClass="CustomButton" customModule="ios_final" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="215" width="361" height="50"/>
+                                        <rect key="frame" x="0.0" y="211.66666666666669" width="361" height="50"/>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.29803921568627451" blue="0.49019607843137253" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="blT-wO-e4E"/>
@@ -662,20 +667,20 @@
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="AXH-Jz-3RV">
-                                        <rect key="frame" x="0.0" y="285" width="361" height="36"/>
+                                        <rect key="frame" x="0.0" y="281.66666666666669" width="361" height="38"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uAL-9A-OjU">
-                                                <rect key="frame" x="0.0" y="0.0" width="170.66666666666666" height="36"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="170.66666666666666" height="38"/>
                                                 <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Regular" family="Spoqa Han Sans Neo" pointSize="20"/>
                                                 <color key="tintColor" systemColor="systemRedColor"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="초기화"/>
+                                                <state key="normal" title="입력 초기화"/>
                                                 <connections>
                                                     <action selector="clearButtonTapped:" destination="5wP-Kc-7sZ" eventType="touchUpInside" id="T7j-e8-VBG"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z7f-D4-7eV">
-                                                <rect key="frame" x="190.66666666666663" y="0.0" width="170.33333333333337" height="36"/>
+                                                <rect key="frame" x="190.66666666666663" y="0.0" width="170.33333333333337" height="38"/>
                                                 <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Regular" family="Spoqa Han Sans Neo" pointSize="20"/>
                                                 <color key="tintColor" systemColor="systemRedColor"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -687,14 +692,14 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n8e-lV-Ozt">
-                                        <rect key="frame" x="0.0" y="341" width="361" height="5"/>
+                                        <rect key="frame" x="0.0" y="339.66666666666669" width="361" height="5"/>
                                         <color key="backgroundColor" systemColor="systemGray2Color"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="5" id="ia3-Eg-EMw"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="댓글" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JtA-eA-WFp">
-                                        <rect key="frame" x="0.0" y="366" width="361" height="20"/>
+                                        <rect key="frame" x="0.0" y="364.66666666666669" width="361" height="21.333333333333314"/>
                                         <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Regular" family="Spoqa Han Sans Neo" pointSize="17"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -771,7 +776,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIc-N6-Yzu" customClass="CustomButton" customModule="ios_final" customModuleProvider="target">
-                                        <rect key="frame" x="273" y="374" width="90" height="34"/>
+                                        <rect key="frame" x="273" y="372.66666666666663" width="90" height="35.333333333333314"/>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.29803921568627451" blue="0.49019607843137253" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="90" id="Xf5-Y1-YHo"/>
@@ -831,17 +836,17 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="팔로우 목록" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HcP-YQ-cXU">
-                                <rect key="frame" x="0.0" y="143" width="393" height="25"/>
+                                <rect key="frame" x="0.0" y="153" width="393" height="20"/>
                                 <color key="backgroundColor" red="0.011764705882352941" green="0.070588235294117646" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="25" id="DKQ-5D-Lue"/>
+                                    <constraint firstAttribute="height" constant="20" id="DKQ-5D-Lue"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="highlightedColor" red="0.011764705882352941" green="0.070588235294117646" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="eZB-cs-Xjf">
-                                <rect key="frame" x="0.0" y="168" width="393" height="601"/>
+                                <rect key="frame" x="0.0" y="173" width="393" height="596"/>
                                 <color key="backgroundColor" red="0.011764705882352941" green="0.070588235294117646" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CustomCell" id="7YK-Yz-FqU" customClass="CustomTableViewCell" customModule="ios_final" customModuleProvider="target">
@@ -858,6 +863,7 @@
                         <viewLayoutGuide key="safeArea" id="hQJ-Qo-dSE"/>
                         <color key="backgroundColor" red="0.011764705882352941" green="0.070588235294117646" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="HcP-YQ-cXU" firstAttribute="top" secondItem="rHf-eb-Q46" secondAttribute="bottom" constant="10" id="1XV-pJ-yEo"/>
                             <constraint firstItem="rHf-eb-Q46" firstAttribute="top" secondItem="hQJ-Qo-dSE" secondAttribute="top" id="2PH-hf-T8h"/>
                             <constraint firstItem="HcP-YQ-cXU" firstAttribute="leading" secondItem="hQJ-Qo-dSE" secondAttribute="leading" id="9IL-de-swf"/>
                             <constraint firstItem="hQJ-Qo-dSE" firstAttribute="trailing" secondItem="rHf-eb-Q46" secondAttribute="trailing" constant="10" id="GfE-QX-cyh"/>
@@ -865,7 +871,6 @@
                             <constraint firstItem="rHf-eb-Q46" firstAttribute="leading" secondItem="hQJ-Qo-dSE" secondAttribute="leading" constant="10" id="cO1-RF-i6Q"/>
                             <constraint firstItem="eZB-cs-Xjf" firstAttribute="top" secondItem="HcP-YQ-cXU" secondAttribute="bottom" id="gP3-b6-neE"/>
                             <constraint firstItem="hQJ-Qo-dSE" firstAttribute="trailing" secondItem="eZB-cs-Xjf" secondAttribute="trailing" id="olN-7c-g9c"/>
-                            <constraint firstItem="rHf-eb-Q46" firstAttribute="bottom" secondItem="HcP-YQ-cXU" secondAttribute="top" id="pVP-FX-MnZ"/>
                             <constraint firstItem="eZB-cs-Xjf" firstAttribute="bottom" secondItem="hQJ-Qo-dSE" secondAttribute="bottom" id="pmU-6V-0tQ"/>
                             <constraint firstItem="hQJ-Qo-dSE" firstAttribute="trailing" secondItem="HcP-YQ-cXU" secondAttribute="trailing" id="sJx-C7-xAa"/>
                         </constraints>
@@ -899,7 +904,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5RP-G0-ZbT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2548.8549618320608" y="638.73239436619724"/>
+            <point key="canvasLocation" x="2549" y="-28"/>
         </scene>
     </scenes>
     <resources>

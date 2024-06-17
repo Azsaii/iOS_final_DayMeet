@@ -67,22 +67,35 @@ extension UIViewController {
             }
             alert.addAction(action)
             self.present(alert, animated: true, completion: nil)
-        } else if title == "삭제 확인" || title == "언팔로우" {
+        } else if title == "삭제 확인" || title == "언팔로우" || title == "로그아웃" {
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
             let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
                 completion?()
             }
-            let unfollowAction = UIAlertAction(title: "Unfollow", style: .destructive) { _ in
+            let unfollowAction = UIAlertAction(title: "언팔로우", style: .destructive) { _ in
+                completion?()
+            }
+            let logoutAction = UIAlertAction(title: "로그아웃", style: .destructive) { _ in
                 completion?()
             }
             
             alert.addAction(cancelAction)
-            alert.addAction(title == "삭제 확인" ? deleteAction : unfollowAction)
+            
+            switch title{
+            case "언팔로우": alert.addAction(unfollowAction)
+            case "로그아웃": alert.addAction(logoutAction)
+            default: alert.addAction(deleteAction)
+            }
             self.present(alert, animated: true, completion: nil)
         } else {
             self.present(alert, animated: true, completion: nil)
             // 성공인 경우 일정 시간 후에 자동으로 알림창 닫기
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // 2초 후에 닫기
+            var duration = 0.5 // 알림창 닫히기까지 시간
+            if title == "회원가입 완료" {
+                duration = 1.0
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                 alert.dismiss(animated: true, completion: completion)
             }
         }

@@ -24,6 +24,9 @@ class SignUpViewController: UIViewController {
         configureTextField(passwordTextField)
         configureTextField(confirmPasswordTextField)
         configureTextField(nicknameTextField)
+        
+        // 버튼 모서리 둥글게
+        signUpButton.layer.cornerRadius = 5.0
     }
     
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
@@ -56,7 +59,7 @@ class SignUpViewController: UIViewController {
                 if let error = error {
                     self.showAlert(title: "에러", message: "회원가입 시 닉네임 저장 에러: \(error.localizedDescription)")
                 } else {
-                    self.showAlert(title: "성공", message: "회원가입 성공!") {
+                    self.showAlert(title: "회원가입 완료", message: "\(nickname)님, 환영합니다") {
                         self.dismiss(animated: true, completion: nil)
                     }
                 }

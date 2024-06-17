@@ -51,12 +51,9 @@ extension KeyboardEvent where Self: UIViewController {
         let convertedResponderFrame = transformView.convert(currentResponder.frame, from: currentResponder.superview)
         let responderBottomY = convertedResponderFrame.origin.y + convertedResponderFrame.size.height
         
-        print("responderBottomY: \(responderBottomY)")
-        print("keyboardTopY: \(keyboardTopY)")
         if responderBottomY > keyboardTopY {
             let offset = responderBottomY - keyboardTopY + 20 // 적절한 오프셋 추가
             transformView.frame.origin.y -= offset
-            print("transformView.frame.origin.y: \(transformView.frame.origin.y)")
             isKeyboardVisible = true // 키보드가 나타났음을 기록
         }
     }
