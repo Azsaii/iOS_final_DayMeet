@@ -37,4 +37,4 @@
 #### * 메인 화면, 소셜 화면, 나의 일정 화면은 하단 탭을 통해 이동 가능합니다.
 
 ### 시연 영상
-https://youtu.be/pOgvhBFUdFU
+https://youtu.be/VJgwYH0VAXs
