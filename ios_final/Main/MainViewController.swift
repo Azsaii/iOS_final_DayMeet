@@ -49,9 +49,11 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         // 로그인 / 로그아웃 리스터
         Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             guard let self = self else { return }
+            commentsViewController?.initComment() // 댓글 초기화
             self.updateDateLabel(with: self.selectedDate) // 오늘 날짜로 레이블 초기화
             self.calendar.select(self.selectedDate) // 오늘 날짜로 달력에서 선택
             calendarCurrentPageDidChange(calendar) // 일정 있는 날짜 색 변경
+            scrollToTop()
         }
         
         // 일정이 생성/삭제 되었을 때 알림을 수신하도록 등록
@@ -127,15 +129,6 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         dateFormatter.dateFormat = "yyyy-MM-dd"
         postCreateViewController?.currentDateLabel.text = dateFormatter.string(from: date)
         postCreateViewController?.selectedDate = date // 선택 날짜 변경 전달
-//        postCreateViewController?.loadPost(for: date) { [weak self] postId in
-//            guard let self = self else { return }
-//            if let postId = postId {
-//                print("Received postId: \(postId)") // postId 로그 출력
-//            } else {
-//                print("No postId found for the selected date.") // postId가 없을 때 로그 출력
-//                self.commentsViewController?.setPostId(postId: "") // 댓글창 초기화
-//            }
-//        }
         postCreateViewController?.loadPost(for: date)
     }
     

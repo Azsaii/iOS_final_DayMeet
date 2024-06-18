@@ -200,7 +200,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     // 댓글 창 초기화
-    func initComment() {
+   func initComment() {
         print("init comment")
         comments = []
         tableView.reloadData()
