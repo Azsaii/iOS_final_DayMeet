@@ -12,13 +12,8 @@ class PostDetailViewController: UIViewController, CommentsViewControllerDelegate
     @IBOutlet weak var commentsContainerView: UIView!
     @IBOutlet weak var commentsContainerHeightConstraint: NSLayoutConstraint!
     var commentsViewController: CommentsViewController?
-    
-    var postId: String? {
-        didSet {
-            // postId가 설정될 때 commentsViewController에 전달
-            commentsViewController?.setPostId(postId: postId!)
-        }
-    }
+   
+    var postId: String?
     var post: Post?
     
     // 키보드 이벤트 시 움직일 뷰
@@ -34,16 +29,9 @@ class PostDetailViewController: UIViewController, CommentsViewControllerDelegate
         // post 객체가 있으면 UI 업데이트
         if let post = post {
             updateUI(with: post)
-        // postId가 있으면 Firestore에서 데이터 가져오기
         }
         
         commentsContainerHeightConstraint.constant = 60 // 초기 높이 설정
-        
-        // 댓글 뷰 컨트롤러가 설정된 후 postId를 전달
-        if let postId = postId {
-            commentsViewController?.setPostId(postId: postId)
-        }
-        
         // 키보드가 올라왔을 때 드래그하면 내려간다.
         scrollView.keyboardDismissMode = .onDrag
         
@@ -63,12 +51,8 @@ class PostDetailViewController: UIViewController, CommentsViewControllerDelegate
         self.post = post
     }
     
-    func setPostId(_ postId: String) {
-        self.postId = postId
-    }
-    
-    
     func addCommentsViewController() {
+        print("addcomment!!!")
         // Storyboard 인스턴스 가져오기
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
@@ -88,6 +72,11 @@ class PostDetailViewController: UIViewController, CommentsViewControllerDelegate
             // commentsViewController 참조 저장
             self.commentsViewController = commentsVC
             commentsViewController?.delegate = self
+            
+            // commentsViewController 추가 후에 postId를 설정
+            if let postId = postId {
+                NotificationCenter.default.post(name: NSNotification.Name("PostIdUpdated"), object: commentsVC, userInfo: ["postId": postId])
+            }
         }
     }
     
@@ -116,5 +105,11 @@ class PostDetailViewController: UIViewController, CommentsViewControllerDelegate
         if bottomOffset.y > 0 {
             scrollView.setContentOffset(bottomOffset, animated: true)
         }
+    }
+    
+    func scrollToTop() {
+        // 스크롤뷰를 최상단으로 스크롤
+        let topOffset = CGPoint(x: 0, y: -scrollView.contentInset.top)
+        scrollView.setContentOffset(topOffset, animated: true)
     }
 }

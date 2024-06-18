@@ -59,7 +59,7 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
     }
     
     @objc func handleNewPostCreated() {
-        calendarCurrentPageDidChange(calendar) // 일정 있는 날짜 색 변경c
+        calendarCurrentPageDidChange(calendar) // 일정 있는 날짜 색 변경
     }
     
     // KeyboardEvent에서 사용된 addObserver는 자동으로 제거가 안됨
@@ -90,10 +90,11 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
             // postCreateViewController 참조 저장
             postCreateViewController = postVC
             postCreateViewController?.selectedDate = selectedDate // 선택 날짜 변경 전달
+            postCreateViewController?.mainViewController = self
             
             // commentsViewController 설정
-            if let commentsVC = self.commentsViewController {
-                postCreateViewController?.commentsViewController = commentsVC
+            if let mainCommentsVC = self.commentsViewController {
+                postCreateViewController?.commentsViewController = mainCommentsVC
             }
         }
     }
@@ -103,20 +104,20 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         // commentsViewController 인스턴스 가져오기
-        if let commentsVC = storyboard.instantiateViewController(withIdentifier: "CommentsViewController") as? CommentsViewController {
+        if let mainCommentsVC = storyboard.instantiateViewController(withIdentifier: "CommentsViewController") as? CommentsViewController {
             
             // commentsViewController를 자식 ViewController로 추가
-            addChild(commentsVC)
+            addChild(mainCommentsVC)
             
             // commentsViewController의 View를 commentsContainerView에 추가
-            commentsVC.view.frame = commentsContainerView.bounds
-            commentsContainerView.addSubview(commentsVC.view)
+            mainCommentsVC.view.frame = commentsContainerView.bounds
+            commentsContainerView.addSubview(mainCommentsVC.view)
             
             // commentsViewController가 자식 ViewController 추가를 완료했음을 알림
-            commentsVC.didMove(toParent: self)
+            mainCommentsVC.didMove(toParent: self)
             
             // commentsViewController 참조 저장
-            self.commentsViewController = commentsVC
+            self.commentsViewController = mainCommentsVC
             commentsViewController?.delegate = self
         }
     }
@@ -126,15 +127,16 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         dateFormatter.dateFormat = "yyyy-MM-dd"
         postCreateViewController?.currentDateLabel.text = dateFormatter.string(from: date)
         postCreateViewController?.selectedDate = date // 선택 날짜 변경 전달
-        postCreateViewController?.loadPost(for: date) { [weak self] postId in
-            guard let self = self else { return }
-            if let postId = postId {
-                print("Received postId: \(postId)") // postId 로그 출력
-            } else {
-                print("No postId found for the selected date.") // postId가 없을 때 로그 출력
-                self.commentsViewController?.setPostId(postId: "") // 댓글창 초기화
-            }
-        }
+//        postCreateViewController?.loadPost(for: date) { [weak self] postId in
+//            guard let self = self else { return }
+//            if let postId = postId {
+//                print("Received postId: \(postId)") // postId 로그 출력
+//            } else {
+//                print("No postId found for the selected date.") // postId가 없을 때 로그 출력
+//                self.commentsViewController?.setPostId(postId: "") // 댓글창 초기화
+//            }
+//        }
+        postCreateViewController?.loadPost(for: date)
     }
     
     private func isLoginViewControllerPresented() -> Bool {
@@ -196,5 +198,11 @@ class MainViewController: UIViewController, CommentsViewControllerDelegate, Keyb
         if bottomOffset.y > 0 {
             scrollView.setContentOffset(bottomOffset, animated: true)
         }
+    }
+    
+    func scrollToTop() {
+        // 스크롤뷰를 최상단으로 스크롤
+        let topOffset = CGPoint(x: 0, y: -scrollView.contentInset.top)
+        scrollView.setContentOffset(topOffset, animated: true)
     }
 }

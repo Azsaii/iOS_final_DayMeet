@@ -30,6 +30,16 @@ class UserPostsViewController: UIViewController, UITableViewDelegate, UITableVie
         NotificationCenter.default.addObserver(self, selector: #selector(handleNewPostCreated), name: NSNotification.Name("PostUpdated"), object: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+    
+    func setupNavigationBar() { // 뒤로가기 버튼 스타일 지정
+        navigationController?.navigationBar.barTintColor = UIColor.darkBlue
+        navigationController?.navigationBar.tintColor = UIColor.white
+    }
+    
     @objc func handleNewPostCreated() {
         fetchUserPosts()
     }

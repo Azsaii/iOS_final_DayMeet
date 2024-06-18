@@ -5,6 +5,7 @@ import FirebaseFirestore
 protocol CommentsViewControllerDelegate: AnyObject {
     func updateCommentsContainerHeight(_ height: CGFloat)
     func scrollToBottom()
+    func scrollToTop()
 }
 
 class CommentsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, CustomTableViewCellDelegate {
@@ -17,15 +18,10 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     weak var delegate: CommentsViewControllerDelegate?
     
     let placeholderText = "댓글 입력하기"
-    private var postId = ""
+    var postId: String?
     var comments: [[String: Any]] = [] // 댓글 데이터를 저장할 배열 (딕셔너리 형태)
     var isCommentSaved = false // 댓글이 1회라도 저장되어야 화면이 최하단으로 스크롤되게 하기 위함.
     let commentHeight: CGFloat = 50 // 댓글 하나당 고정 높이
-    
-    public func setPostId(postId: String){
-        self.postId = postId
-        postId == "" ? initComment() : loadComments() // 변경된 날짜의 일정이 없는경우 댓글 초기화, 있으면 댓글 로드
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,15 +44,28 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         
         // 텍스트뷰 초기 설정
         configureTextView(commentTextView)
-        commentTextView.text = placeholderText
-        
+        commentTextView.textColor = UIColor.white
         // 드래그 시 키보드 내림
         tableView.keyboardDismissMode = .onDrag
         
         postCommentButton.layer.cornerRadius = 5.0
+        
+        // postId 업데이트 수신
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePostIdUpdated(_:)), name: NSNotification.Name("PostIdUpdated"), object: self)
+    }
+    
+    @objc func handlePostIdUpdated(_ notification: Notification) {
+        if let userInfo = notification.userInfo, let postId = userInfo["postId"] as? String {
+            self.postId = postId
+            // 변경된 날짜의 일정이 없는경우 댓글 초기화, 있으면 댓글 로드
+            postId == "" ? initComment() : loadComments()
+            self.commentTextView.text = ""
+            self.commentTextView.resignFirstResponder()
+        }
     }
     
     func textViewDidChange(_ textView: UITextView) {
+        
         // 텍스트뷰의 기본 높이 설정
         let minHeight: CGFloat = 35 // 기본 높이
         let maxHeight: CGFloat = 3 * minHeight // 최대 3줄 높이까지만 확장
@@ -86,19 +95,11 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
     
     // 텍스트뷰 포커싱되면 플레이스홀더 삭제
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if commentTextView.text == placeholderText {
-            commentTextView.text = ""
-            commentTextView.textColor = .white
-        }
         animateBorderWidth(for: textView, to: focusedBorderWidth)
     }
     
     // 텍스트뷰 포커싱 해제되면 플레이스홀더 적용
     func textViewDidEndEditing(_ textView: UITextView) {
-        if commentTextView.text.isEmpty {
-            commentTextView.text = placeholderText
-            commentTextView.textColor = UIColor.lightGray.withAlphaComponent(0.7)
-        }
         animateBorderWidth(for: textView, to: defaultBorderWidth)
     }
     
@@ -133,7 +134,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         ]
         
         let db = Firestore.firestore()
-        let document = db.collection("posts").document(postId).collection("comments").document()
+        let document = db.collection("posts").document(postId!).collection("comments").document()
         
         document.setData(commentData) { error in
             if let error = error {
@@ -146,6 +147,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                 DispatchQueue.main.async {
                     self.comments.append(newCommentData)
                     self.commentTextView.text = ""
+                    self.commentTextView.resignFirstResponder()
                     self.tableView.reloadData()
                     self.isCommentSaved = true // 댓글이 저장되었음을 표시
                     self.updateTableViewHeight()
@@ -162,7 +164,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         let db = Firestore.firestore()
-        db.collection("posts").document(postId).collection("comments").getDocuments { (querySnapshot, error) in
+        db.collection("posts").document(postId!).collection("comments").getDocuments { (querySnapshot, error) in
             if let error = error {
                 DispatchQueue.main.async {
                     self.showAlert(title: "에러", message: "댓글 로딩 에러: \(error.localizedDescription)")
@@ -180,7 +182,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
                         print("comment empty!")
                         self.comments = []
                     }
-                    
+                
                     // timestamp 필드에 따라 최신 댓글일수록 뒤로 가도록 정렬
                     self.comments.sort {
                         guard let timestamp1 = $0["timestamp"] as? Int,
@@ -196,9 +198,10 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
-
+    
+    // 댓글 창 초기화
     func initComment() {
-        // 댓글 창 초기화
+        print("init comment")
         comments = []
         tableView.reloadData()
         updateTableViewHeight()
@@ -269,7 +272,7 @@ class CommentsViewController: UIViewController, UITableViewDelegate, UITableView
         guard let commentId = commentData["id"] as? String else { return }
         print("delete commentid: \(commentId)")
         let db = Firestore.firestore()
-        db.collection("posts").document(postId).collection("comments").document(commentId).delete { error in
+        db.collection("posts").document(postId!).collection("comments").document(commentId).delete { error in
             if let error = error {
                 DispatchQueue.main.async {
                     self.showAlert(title: "에러", message: "댓글 삭제 에러: \(error.localizedDescription)")

@@ -18,11 +18,18 @@ class LoginViewController: UIViewController {
         configureTextField(emailTextField)
         configureTextField(passwordTextField)
         
+        // 패스워드 필드를 ***로 보이도록 설정
+        passwordTextField.isSecureTextEntry = true
+        
+        // 영어만 입력 가능
+        emailTextField.keyboardType = .asciiCapable
+        passwordTextField.keyboardType = .asciiCapable
+        
         // 버튼 모서리 둥글게
         loginButton.layer.cornerRadius = 5.0
         signUpButton.layer.cornerRadius = 5.0
     }
-    
+
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         guard let email = emailTextField.text, !email.isEmpty,
               let password = passwordTextField.text, !password.isEmpty else {
@@ -35,6 +42,8 @@ class LoginViewController: UIViewController {
             if let error = error {
                 // Show error alert
                 self.showAlert(title: "에러", message: error.localizedDescription)
+                self.emailTextField.text = ""
+                self.passwordTextField.text = ""
                 return
             }
             

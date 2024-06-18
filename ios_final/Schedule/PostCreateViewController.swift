@@ -17,11 +17,12 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var contentTextViewHeightConstraint: NSLayoutConstraint!
     weak var commentsViewController: CommentsViewController?
+    weak var mainViewController: MainViewController?
     
     // 달력 선택 날짜가 바뀌면 데이터 가져오기
     var selectedDate: Date = Date()
     let placeholderText = "일정 입력하기"
-    var currentPostId: String?
+    var postId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,11 +45,16 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
         setupButtonStyle(for: clearButton)
     }
     
+    func updatePostId(_ newPostId: String) {
+        print("upd postid: \(newPostId)")
+        postId = newPostId
+        NotificationCenter.default.post(name: NSNotification.Name("PostIdUpdated"), object: mainViewController?.commentsViewController, userInfo: ["postId": newPostId])
+    }
+    
     // Firebase에서 날짜에 따른 글 정보 로드
-    func loadPost(for date: Date, completion: @escaping (String?) -> Void) {
+    func loadPost(for date: Date) {
         guard let user = Auth.auth().currentUser else {
             resetPostFields()
-            completion(nil)
             return
         }
         
@@ -68,27 +74,23 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
                     DispatchQueue.main.async {
                         self.showAlert(title: "에러", message: "일정 로딩 에러: \(error.localizedDescription)")
                     }
-                    completion(nil)
                 } else {
                     DispatchQueue.main.async {
                         if let document = querySnapshot?.documents.first {
                             let data = document.data()
+                            // 화면에 일정 로드한 정보 나타내기
                             self.titleTextField.text = data["title"] as? String
                             self.contentTextView.text = data["content"] as? String
                             self.contentTextView.textColor = .white
                             let isPublic = data["isPublic"] as? Bool ?? true
                             self.privacyToggle.isOn = isPublic
                             self.updatePrivacyLabel(isPublic: isPublic)
-                            completion(document.documentID)
                             
-                            // 댓글 컨트롤러에 업데이트된 postId 전달
-                            self.commentsViewController?.setPostId(postId: document.documentID)
-                            
-                            // 문서 ID 저장
-                            self.currentPostId = document.documentID
+                            // 새로 받은 postId 전파
+                            self.updatePostId(document.documentID)
                         } else {
                             self.resetPostFields()
-                            completion(nil)
+                            self.updatePostId("") // 일정 없는 경우 postId 초기화
                         }
                     }
                 }
@@ -160,15 +162,14 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
             "isPublic": isPublic
         ]
         
-        let db = Firestore.firestore()
-        
-        if let currentPostId = currentPostId {
-            // 기존 게시글 업데이트
-            updatePost(postId: currentPostId, post: post, userId: user.uid, formattedDate: formattedDate)
-        } else {
+        if postId == "" {
             // 새 게시글 저장
             let postId = UUID().uuidString
             saveNewPost(postId: postId, post: post, userId: user.uid, formattedDate: formattedDate)
+            
+        } else {
+            // 기존 게시글 업데이트
+            updatePost(postId: postId!, post: post, userId: user.uid, formattedDate: formattedDate)
         }
     }
     
@@ -194,7 +195,7 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
             }
         }
     }
-
+    
     // 새 게시글 저장
     func saveNewPost(postId: String, post: [String: Any], userId: String, formattedDate: String) {
         let db = Firestore.firestore()
@@ -211,19 +212,19 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
                         self.showAlert(title: "에러", message: "일정 저장 경로 에러: \(error.localizedDescription)")
                     } else {
                         self.showAlert(title: "성공", message: "일정이 저장되었습니다!")
-                        self.commentsViewController?.setPostId(postId: postId)
-                        self.currentPostId = postId
+                        //self.commentsViewController?.setPostId(postId: postId)
+                        self.updatePostId(postId)
                         NotificationCenter.default.post(name: NSNotification.Name("PostUpdated"), object: nil)
                     }
                 }
             }
         }
     }
-
-
+    
+    
     @IBAction func deleteButtonTapped(_ sender: UIButton) {
         
-        guard let _ = self.currentPostId,
+        guard let _ = self.postId,
               let _ = Auth.auth().currentUser else {
             self.showAlert(title: "작업 불가", message: "삭제할 일정이 없습니다.")
             return
@@ -233,10 +234,10 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
             self?.deletePost()
         }
     }
-  
+    
     // 일정 삭제
     private func deletePost() {
-        guard let postId = self.currentPostId,
+        guard let postId = self.postId,
               let user = Auth.auth().currentUser else { return }
         
         let db = Firestore.firestore()
@@ -252,8 +253,9 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
                     } else {
                         self.showAlert(title: "성공", message: "일정이 삭제되었습니다!")
                         self.resetPostFields() // 삭제 후 UI 업데이트
-                        self.currentPostId = nil
-                        self.commentsViewController?.setPostId(postId: "")
+                        self.postId = nil
+                        self.updatePostId("")
+                        //self.commentsViewController?.setPostId(postId: "")
                         
                         // UserPostsViewController 에서 새로 글을 가져오게 하기 위한 알림
                         NotificationCenter.default.post(name: NSNotification.Name("PostUpdated"), object: nil)
@@ -262,9 +264,9 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
             }
         }
     }
-        
+    
     @IBAction func clearButtonTapped(_ sender: UIButton) {
-        guard let _ = self.currentPostId,
+        guard let _ = self.postId,
               let _ = Auth.auth().currentUser else {
             self.showAlert(title: "작업 불가", message: "이미 초기화되었습니다.")
             return
@@ -290,5 +292,9 @@ class PostCreateViewController: UIViewController, UITextViewDelegate {
         self.contentTextView.textColor = .lightGray
         self.privacyToggle.isOn = true
         self.updatePrivacyLabel(isPublic: true)
+        self.postId = nil
+        
+        self.contentTextView.resignFirstResponder() // 포커스 해제
+        self.titleTextField.resignFirstResponder()
     }
 }

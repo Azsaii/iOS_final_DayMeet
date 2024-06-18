@@ -84,7 +84,7 @@
                                                     <segue destination="5wP-Kc-7sZ" kind="embed" id="jNk-oN-lqJ"/>
                                                 </connections>
                                             </containerView>
-                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fq8-J9-mn2" customClass="Com">
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fq8-J9-mn2">
                                                 <rect key="frame" x="0.0" y="820" width="393" height="500"/>
                                                 <color key="backgroundColor" red="1" green="0.79199999570000001" blue="0.15700000519999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -415,7 +415,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="tG2-SX-BVg" userLabel="Btn Stack View">
                                         <rect key="frame" x="0.0" y="125.99999999999999" width="363" height="39.333333333333329"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xii-Ou-TIS" customClass="CustomButton" customModule="ios_final" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xii-Ou-TIS">
                                                 <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="39.333333333333336"/>
                                                 <color key="backgroundColor" red="0.20000000000000001" green="0.29803921568627451" blue="0.49019607843137253" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -427,7 +427,7 @@
                                                     <action selector="loginButtonTapped:" destination="fxY-S7-eRq" eventType="touchUpInside" id="Op9-YM-Xkt"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hcy-Cd-ihQ" customClass="CustomButton" customModule="ios_final" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hcy-Cd-ihQ">
                                                 <rect key="frame" x="206.66666666666663" y="0.0" width="156.33333333333337" height="39.333333333333336"/>
                                                 <color key="backgroundColor" red="0.20000000000000001" green="0.29803921568627451" blue="0.49019607843137253" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -555,7 +555,7 @@
                                             </textField>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0yd-kb-P0A" customClass="CustomButton" customModule="ios_final" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0yd-kb-P0A">
                                         <rect key="frame" x="0.0" y="240.00000000000009" width="363" height="39.333333333333343"/>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.29803921568627451" blue="0.49019607843137253" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -651,7 +651,7 @@
                                         <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Regular" family="Spoqa Han Sans Neo" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uyO-gz-ef6" customClass="CustomButton" customModule="ios_final" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uyO-gz-ef6">
                                         <rect key="frame" x="0.0" y="211.66666666666669" width="361" height="50"/>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.29803921568627451" blue="0.49019607843137253" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -766,17 +766,17 @@
                                 </prototypes>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="aPF-I0-ew9">
-                                <rect key="frame" x="15" y="410" width="363" height="408"/>
+                                <rect key="frame" x="15" y="430" width="363" height="388"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="93Q-Zo-FgK">
-                                        <rect key="frame" x="0.0" y="358" width="263" height="50"/>
+                                        <rect key="frame" x="0.0" y="338" width="263" height="50"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" name="SpoqaHanSansNeo-Regular" family="Spoqa Han Sans Neo" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIc-N6-Yzu" customClass="CustomButton" customModule="ios_final" customModuleProvider="target">
-                                        <rect key="frame" x="273" y="372.66666666666663" width="90" height="35.333333333333314"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIc-N6-Yzu">
+                                        <rect key="frame" x="273" y="352.66666666666663" width="90" height="35.333333333333314"/>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.29803921568627451" blue="0.49019607843137253" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="90" id="Xf5-Y1-YHo"/>
@@ -803,7 +803,7 @@
                             <constraint firstItem="UHn-pR-SZa" firstAttribute="top" secondItem="WnW-KO-7GT" secondAttribute="top" constant="10" id="C28-gQ-T8n"/>
                             <constraint firstItem="aPF-I0-ew9" firstAttribute="leading" secondItem="UHn-pR-SZa" secondAttribute="leading" id="Z6c-VT-5KY"/>
                             <constraint firstItem="QYs-dz-jl0" firstAttribute="bottom" secondItem="aPF-I0-ew9" secondAttribute="bottom" id="jNU-1e-B0z"/>
-                            <constraint firstItem="aPF-I0-ew9" firstAttribute="top" secondItem="UHn-pR-SZa" secondAttribute="bottom" id="qAK-RL-Qfy"/>
+                            <constraint firstItem="aPF-I0-ew9" firstAttribute="top" secondItem="UHn-pR-SZa" secondAttribute="bottom" constant="20" id="qAK-RL-Qfy"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="go3-Ru-4b4"/>
@@ -816,7 +816,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZrC-hl-fH9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318" y="373"/>
+            <point key="canvasLocation" x="318" y="435"/>
         </scene>
         <!--Item-->
         <scene sceneID="LL8-I9-5nB">

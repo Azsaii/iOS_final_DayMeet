@@ -19,11 +19,20 @@ class SignUpViewController: UIViewController {
         confirmPasswordTextField.delegate = self
         nicknameTextField.delegate = self
         
+        // *** 로 보이게 설정
+        passwordTextField.isSecureTextEntry = true
+        confirmPasswordTextField.isSecureTextEntry = true
+        
         // 텍스트 필드 초기 설정
         configureTextField(emailTextField)
         configureTextField(passwordTextField)
         configureTextField(confirmPasswordTextField)
         configureTextField(nicknameTextField)
+        
+        // 영어만 입력 가능
+        emailTextField.keyboardType = .asciiCapable
+        passwordTextField.keyboardType = .asciiCapable
+        confirmPasswordTextField.keyboardType = .asciiCapable
         
         // 버튼 모서리 둥글게
         signUpButton.layer.cornerRadius = 5.0
@@ -42,6 +51,8 @@ class SignUpViewController: UIViewController {
         guard password == confirmPassword else {
             // Show alert for password mismatch
             showAlert(title: "경고", message: "비밀번호가 일치하지 않습니다.")
+            passwordTextField.text = ""
+            confirmPasswordTextField.text = ""
             return
         }
         

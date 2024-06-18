@@ -45,7 +45,7 @@ class CustomTabBarController: UITabBarController {
             myScheduleNavController.tabBarItem = UITabBarItem(title: "나의 일정", image: UIImage(systemName: "calendar"), tag: 2)
         }
         
-        // Firebase Auth 상태 변화 리스너 등록
+        // 로그인 / 로그아웃 시 작업
         Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             guard let self = self else { return }
             self.handleUserAuthenticationChanged()
@@ -56,6 +56,10 @@ class CustomTabBarController: UITabBarController {
         // 소셜탭의 네비게이션 스택을 초기화하여 루트 화면으로 이동
         if let socialNavController = viewControllers?[1] as? UINavigationController {
             socialNavController.popToRootViewController(animated: false)
+        }
+        
+        if let myScheduleNavController = viewControllers?[2] as? UINavigationController {
+            myScheduleNavController.popToRootViewController(animated: false)
         }
     }
 }

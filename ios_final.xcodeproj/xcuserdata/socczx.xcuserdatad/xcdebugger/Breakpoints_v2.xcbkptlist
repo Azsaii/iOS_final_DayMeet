@@ -3,4 +3,54 @@
    uuid = "72F08A83-8B3A-4ADA-A3AB-83D13901F8EA"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7E367DA1-58E5-42C1-82F6-6B570BE5993A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ios_final/Schedule/PostDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "addCommentsViewController()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7E367DA1-58E5-42C1-82F6-6B570BE5993A - e953a445e5e26da4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ios_final.PostDetailViewController.addCommentsViewController() -&gt; ()"
+                  moduleName = "ios_final"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/socczx/Desktop/ios_final/ios_final/Schedule/PostDetailViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "592">
+               </Location>
+               <Location
+                  uuid = "7E367DA1-58E5-42C1-82F6-6B570BE5993A - e953a445e5e26cac"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ios_final.PostDetailViewController.addCommentsViewController() -&gt; ()"
+                  moduleName = "ios_final"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/socczx/Desktop/ios_final/ios_final/Schedule/PostDetailViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "592">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
